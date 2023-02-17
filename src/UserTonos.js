@@ -1,7 +1,10 @@
+
 import React from 'react'
+import './Components/Css/UserTonos.css'
 import { useState } from 'react';
-import { Button, Col, Container, Row, Dropdown, ButtonGroup, SplitButton, DropdownButton  } from 'react-bootstrap';
+import { Button, Col, Container, Row, Dropdown, ButtonGroup, DropdownButton  } from 'react-bootstrap';
 import Header from './Components/Header';
+
 function UserTonos() {
 
     const [ device, setDevice ] = useState();
@@ -99,12 +102,41 @@ function UserTonos() {
                     </div>
                   </Col>
                 </Row>
-                <Row className="justify-content-center align-items-center">
-                  <Col>
-                    <div class="badge bg-primary text-wrap main-elem" >
-                      SYS Верхнее давление
+                <Row className="justify-content-center mb-4 mt-5 align-items-center">
+                  <Col md={8} lg={6} xs={12}>
+                    <div className="text-wrap d-flex align-items-center justify-content-center" >
+                      <p className='mesurment-main bg-primary px-3 py-3' >SYS Верхнее давление</p>
                     </div>
                   </Col>  
+                  <Col md={8} lg={6} xs={12}>
+                    <div className="text-wrap d-flex align-items-center justify-content-center" >
+                      <p className='alert alert-dark d-flex bg-light justify-content-center align-items-center' id="SYS_id" style={{fontSize: '1.25rem',minHeight:'3em', minWidth: '4em'}}></p>
+                    </div>
+                  </Col>   
+                </Row>
+                <Row className="justify-content-center my-4 align-items-center">
+                  <Col md={8} lg={6} xs={12}>
+                    <div className="text-wrap d-flex align-items-center justify-content-center" >
+                      <p className='mesurment-main d-flex bg-primary px-3 py-3' >DIA Нижнее давление</p>
+                    </div>
+                  </Col>
+                  <Col md={8} lg={6} xs={12}>
+                    <div className="text-wrap d-flex align-items-center justify-content-center" >
+                      <p className='alert alert-dark d-flex bg-light justify-content-center align-items-center' id="DIA_id" style={{fontSize: '1.25rem', minHeight:'3em', minWidth: '4em'}}></p>
+                    </div>
+                  </Col> 
+                </Row>
+                <Row className="justify-content-center my-4 align-items-center">
+                  <Col md={8} lg={6} xs={12}>
+                    <div className="text-wrap d-flex align-items-center justify-content-center" >
+                      <p className='mesurment-main d-flex bg-primary px-3 py-3' >PUL Пульс</p>
+                    </div>
+                  </Col>
+                  <Col md={8} lg={6} xs={12}>
+                    <div className="text-wrap d-flex align-items-center justify-content-center" >
+                      <p className='alert alert-dark d-flex bg-light justify-content-center align-items-center' id="PUL_id" style={{fontSize: '1.25rem',minHeight:'3em', minWidth: '4em'}}></p>
+                    </div>
+                  </Col> 
                 </Row>
               </div>
               

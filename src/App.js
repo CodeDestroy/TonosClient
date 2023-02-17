@@ -1,5 +1,4 @@
-import './App.css';
-//import * as Bluetooth from 'react-bluetooth';
+import './Components/Css/App.css';
 import { useState } from 'react';
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import UserTonos from './UserTonos';
