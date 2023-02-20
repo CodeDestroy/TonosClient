@@ -129,7 +129,7 @@ function UserTonos() {
                 <Row className="justify-content-center my-4 align-items-center">
                   <Col md={8} lg={6} xs={12}>
                     <div className="text-wrap d-flex align-items-center justify-content-center" >
-                      <p className='mesurment-main d-flex bg-primary px-3 py-3' >PUL Пульс</p>
+                      <p className='mesurment-main d-flex bg-primary px-5 py-3 ' >PUL Пульс</p>
                     </div>
                   </Col>
                   <Col md={8} lg={6} xs={12}>
