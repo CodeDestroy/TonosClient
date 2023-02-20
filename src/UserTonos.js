@@ -138,8 +138,12 @@ function UserTonos() {
                     </div>
                   </Col> 
                 </Row>
+                <Row>
+                  <div className="d-flex my-5 align-items-center justify-content-center">
+                    <Button className='mx-3 btn-primary btn-lg px-5 py-3'>Передать данные врачу</Button>
+                  </div>
+                </Row>
               </div>
-              
             </Container>
           </div>
           {/* <button onClick={connect}>Connect</button>
