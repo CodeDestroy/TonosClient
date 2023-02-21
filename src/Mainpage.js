@@ -9,6 +9,10 @@ function Mainpage() {
   const showTonometr = () => {
     history.push("/userTonometr")
   }
+  
+  const showMonitoring = () => {
+    history.push("/monitoring")
+  }
 
   return (
     <>
@@ -30,7 +34,7 @@ function Mainpage() {
       <Container className='d-flex align-items-center justify-content-around' style={{marginTop: '10em'}}>
         <Row className='flex-row'>
           <Col className='flex-column' style={{margin: '0em 5em 0em 0em'}}>
-            <Button className="btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '320px', maxWidth: '320px'}}>
+            <Button onClick={showMonitoring} className="btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '320px', maxWidth: '320px'}}>
               Мониторинг ключевых показателей
             </Button>
           </Col>
