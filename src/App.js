@@ -1,23 +1,39 @@
 import './Components/Css/App.css';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import UserTonos from './UserTonos';
-
+import Mainpage from './Mainpage';
+import Router from './Components/Routes/router';
+import { Context } from './';
 
 function App() {
 
   const [User_nick, setUser_nick] = useState('');
   const [User_pass, setUser_pass] = useState('');
   const [ logged, setLogged ] = useState(false);
+  const { store } = useContext(Context);
+
+
   const Login = () => {
     console.log(User_nick, User_pass)
     setLogged(true)
+    store.setAuth(true)
+
   }
+
+  useEffect ( () => {
+    console.log('useEffect')
+    if (store.isAuth) {
+      setLogged(true)
+    }
+    else
+      setLogged(false)
+  }, [store])
 
 
   return (
     <>
-    {!logged ?
+    {!store.isAuth ?
       <div>
         <Container>
           <Row className="vh-100 d-flex justify-content-center align-items-center">
@@ -87,7 +103,7 @@ function App() {
         </Container>
       </div>
       :
-      <UserTonos/>
+      <Router/>
     }
     </>
   );
