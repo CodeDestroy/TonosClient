@@ -1,8 +1,19 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Button, Container, Row, Col } from 'react-bootstrap'
 import Header from './Components/Header'
 import { useHistory } from "react-router-dom";
+import { Context } from '.';
 function Mainpage() {
+
+
+  const { store } = useContext(Context);
+  useEffect (() => {
+    
+    if (localStorage.getItem('token')) {
+      store.checkAuth();
+    }
+    
+  }, [store])
 
   const history = useHistory()
 

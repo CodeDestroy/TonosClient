@@ -6,13 +6,16 @@ import Monitoring from '../../Monitoring';
 
 function Router() {
   return (
-    <BrowserRouter>
+    <>
+      <BrowserRouter>
         <Switch>
             <Route exact path="/" component={Mainpage}/>
             <Route exact path="/userTonometr" component={UserTonos}/>
             <Route exact path="/monitoring" component={Monitoring}/>
         </Switch>
-    </BrowserRouter>
+      </BrowserRouter>
+    </>
+    
   )
 }
 

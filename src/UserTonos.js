@@ -146,8 +146,6 @@ function UserTonos() {
               </div>
             </Container>
           </div>
-          {/* <button onClick={connect}>Connect</button>
-          <button onClick={getValues}>GetVal</button> */}
         </>
     )
 }
