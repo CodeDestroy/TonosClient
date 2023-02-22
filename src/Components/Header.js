@@ -15,6 +15,10 @@ function Header() {
     history.push("/userTonometr");
   }
 
+  const showMeasure = () => {
+    history.push("/userMeasure")
+  }
+
   const goToMain = () => {
     history.push('/')
   }
@@ -22,6 +26,11 @@ function Header() {
   const showMonitoring = () => {
     history.push('/monitoring')
   }
+
+  const showAdministration = () => {
+    history.push('/administration')
+  }
+
 
   const Logout = () => {
     store.logout();
@@ -45,6 +54,10 @@ function Header() {
                   <Nav className="me-auto">
                     <Nav.Link onClick={showMonitoring}>Мониторинг ключевых показателей</Nav.Link>
                   </Nav>
+                  <NavDropdown className="me-auto" title="Дистанционная тонометрия" style={{color: '#ffffff8c'}} id="navbarScrollingDropdown">
+                    <NavDropdown.Item onClick={showTonometr}>Измерить давление пациенту</NavDropdown.Item>
+                    <NavDropdown.Item onClick={showMeasure}>Показать статистику измерений</NavDropdown.Item>
+                  </NavDropdown>
                 </>
                 :
                 <></>
@@ -54,14 +67,14 @@ function Header() {
                 <Nav.Link onClick={showTonometr}>Дистанционная тонометрия</Nav.Link>
             </Nav>
             {
-              store.user.is_admin ?
-                <>
-                  <Nav className="me-auto">
-                    <Nav.Link href="#home">Администрирование</Nav.Link>
-                  </Nav>
-                </>
-                :
-                <></>
+              store.user.is_admin ? 
+              <>
+                <Nav className="me-auto">
+                  <Nav.Link href="#home">Администрирование</Nav.Link>
+                </Nav>
+              </>
+              :
+              <></>
             }
             
             {/* <Navbar.Collapse className="justify-content-end">

@@ -9,6 +9,7 @@ function App() {
 
   const { store } = useContext(Context);
 
+
   useEffect ( () => {
     
     if (localStorage.getItem('token')) {
@@ -17,25 +18,16 @@ function App() {
   }, [store])
 
 
-  if (!store.isAuth) {
-    return (
-      <Login/>
-    )
-  }
-  else {
-    return (
-      <Router/>
-    )
-  }
   return (
+    
     <>
-    {!store.isAuth ?
-      <Login/>
-      :
-      <Router/>
-    }
+      { !store.isAuth ?
+        <Login/>
+        :
+        <Router/>
+      } 
     </>
-  );
+  )
 }
 
 export default observer(App);

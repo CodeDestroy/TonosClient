@@ -2,12 +2,16 @@
 import React from 'react'
 import './Components/Css/UserTonos.css'
 import { useState } from 'react';
-import { Button, Col, Container, Row, Dropdown, ButtonGroup, DropdownButton  } from 'react-bootstrap';
+import { Button, Col, Container, Row, Dropdown, ButtonGroup, DropdownButton, Modal, Form  } from 'react-bootstrap';
 import Header from './Components/Header';
+import SearchPatientModal from './Components/Modals/SearchPatientModal';
 
 function UserTonos() {
 
     const [ device, setDevice ] = useState();
+    const handleShow = () => setModalShow(true);
+    const [modalShow, setModalShow] = React.useState(false);
+
     const connect = async () => {
     const device = await navigator.bluetooth.requestDevice({
       // Philips Hue Light Control Service
@@ -76,6 +80,12 @@ function UserTonos() {
           <div>
             <Container>
               <div className="mt-5 vh-100 justify-content-center align-items-center">
+                  <div>
+                    <Button variant="primary" onClick={handleShow} className='mx-3 btn-primary btn-lg'>
+                      Выбрать пациента
+                    </Button>
+                    <SearchPatientModal show={modalShow} onHide={() => setModalShow(false)}/>
+                  </div> 
                 <Row className="justify-content-center align-items-center">
                   <Col md={8} lg={6} xs={12}>
                     <div className="d-flex my-5 align-items-center justify-content-center">
@@ -92,8 +102,7 @@ function UserTonos() {
                         <Dropdown.Item>
                           <Button className='mx-3' onClick={connect}>Подключить новое устройство</Button>
                         </Dropdown.Item>
-                      </DropdownButton>
-                      
+                      </DropdownButton> 
                     </div>
                   </Col>
                   <Col md={8} lg={6} xs={12}>
@@ -140,7 +149,7 @@ function UserTonos() {
                 </Row>
                 <Row>
                   <div className="d-flex my-5 align-items-center justify-content-center">
-                    <Button className='mx-3 btn-primary btn-lg px-5 py-3'>Передать данные врачу</Button>
+                    <Button className='mx-3 btn-primary btn-lg px-5 py-3'>Передать данные</Button>
                   </div>
                 </Row>
               </div>
