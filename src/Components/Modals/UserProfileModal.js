@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { Context } from '../..';
 
 function UserProfileModal(props) {
+  const { store } = useContext(Context);
   return (
     <Modal
       {...props}
@@ -16,7 +18,7 @@ function UserProfileModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Новичихин Андрей</h4>
+        <h4>{store.user.famil + ' ' + store.user.name + ' ' + store.user.otch}</h4>
         <p>
           Инфорамация
         </p>

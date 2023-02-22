@@ -8,7 +8,8 @@ import UserTonosMonitoring from '../../UserTonosMonitoring';
 
 function Router() {
   return (
-    <BrowserRouter>
+    <>
+      <BrowserRouter>
         <Switch>
             <Route exact path="/" component={Mainpage}/>
             <Route exact path="/userTonometr" component={UserTonos}/>
@@ -16,7 +17,9 @@ function Router() {
             <Route exact path="/administration" component={Administration}/>
             <Route exact path="/userMeasure" component={UserTonosMonitoring}/>
         </Switch>
-    </BrowserRouter>
+      </BrowserRouter>
+    </>
+    
   )
 }
 
