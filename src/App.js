@@ -19,6 +19,7 @@ function App() {
     setLogged(true)
     store.setAuth(true)
 
+    
   }
 
   useEffect ( () => {
