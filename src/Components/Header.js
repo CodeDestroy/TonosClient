@@ -11,12 +11,20 @@ function Header() {
     history.push("/userTonometr");
   }
 
+  const showMeasure = () => {
+    history.push("/userMeasure")
+  }
+
   const goToMain = () => {
     history.push('/')
   }
 
   const showMonitoring = () => {
     history.push('/monitoring')
+  }
+
+  const showAdministration = () => {
+    history.push('/administration')
   }
 
   return (
@@ -29,11 +37,12 @@ function Header() {
             <Nav className="me-auto">
                 <Nav.Link onClick={showMonitoring}>Мониторинг ключевых показателей</Nav.Link>
             </Nav>
+            <NavDropdown className="me-auto" title="Дистанционная тонометрия" style={{color: '#ffffff8c'}} id="navbarScrollingDropdown">
+              <NavDropdown.Item onClick={showTonometr}>Измерить давление пациенту</NavDropdown.Item>
+              <NavDropdown.Item onClick={showMeasure}>Показать статистику измерений</NavDropdown.Item>
+            </NavDropdown>
             <Nav className="me-auto">
-                <Nav.Link onClick={showTonometr}>Дистанционная тонометрия</Nav.Link>
-            </Nav>
-            <Nav className="me-auto">
-                <Nav.Link href="#home">Администрирование</Nav.Link>
+                <Nav.Link onClick={showAdministration}>Администрирование</Nav.Link>
             </Nav>
             {/* <Navbar.Collapse className="justify-content-end">
                 <Navbar.Link className="d-flex justify-content-end">
