@@ -44,7 +44,7 @@ function Header() {
   return (
     <Navbar bg="dark" variant="dark">
         <Container>
-            <Navbar.Brand onClick={goToMain}><Icon.HouseFill className="px-1 pb-1" size={30}/>Главная</Navbar.Brand>
+            <Navbar.Brand onClick={goToMain} style={{cursor:'pointer', marginRight: '3em'}}><Icon.HouseFill className="px-1 pb-1" size={30}/>Главная</Navbar.Brand>
             {
               store.user.is_admin ? 
                 <>
@@ -60,12 +60,12 @@ function Header() {
                   </NavDropdown>
                 </>
                 :
-                <></>
+                <>
+                  <Nav className="me-auto">
+                    <Nav.Link onClick={showTonometr}>Дистанционная тонометрия</Nav.Link>
+                  </Nav>
+                </>
             }
-           
-            <Nav className="me-auto">
-                <Nav.Link onClick={showTonometr}>Дистанционная тонометрия</Nav.Link>
-            </Nav>
             {
               store.user.is_admin ? 
               <>
