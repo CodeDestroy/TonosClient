@@ -5,8 +5,11 @@ function SearchPatientModal(props) {
   return (
     <Modal
     {...props}
-    backdrop="static"
+    //backdrop="static"
     keyboard={false}
+    size="lg"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
   >
     <Modal.Header closeButton>
       <Modal.Title>Найти пациента</Modal.Title>
@@ -46,7 +49,6 @@ function SearchPatientModal(props) {
             ))}
           </Form>
         </Form.Group>
-        <Button>Выбрать</Button>
       </Form>
     </Modal.Body>
     <Modal.Footer>

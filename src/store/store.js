@@ -8,7 +8,8 @@ import userDto from "../dtos/user-dto";
 export default class Store {
     user = {};
     isAuth = false;
-    
+    device = {};
+
     constructor () {
         makeAutoObservable(this);
     }
@@ -21,6 +22,11 @@ export default class Store {
     setUser (user) {
         this.user = user;
     }
+
+    setDevice (device) {
+        this.device = device;
+    }
+
     
     async login (login, password){
         try {

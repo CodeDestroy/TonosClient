@@ -45,7 +45,7 @@ function Header() {
     <Navbar bg="dark" variant="dark">
         <Container>
             <Navbar.Brand onClick={goToMain} style={{cursor:'pointer', marginRight: '3em'}}><Icon.HouseFill className="px-1 pb-1" size={30}/>Главная</Navbar.Brand>
-            {
+            { 
               store.user.is_admin ? 
                 <>
                   <NavDropdown className="me-auto" title="Статистика" style={{color: '#ffffff8c'}} id="navbarScrollingDropdown">
