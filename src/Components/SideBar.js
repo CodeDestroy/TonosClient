@@ -1,11 +1,14 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useRef} from 'react'
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import * as Icon from 'react-bootstrap-icons';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { Navbar } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 import { Context } from '..';
+import Administration from '../Administration';
+
 function SideBar() {
+    const windowHeight = useRef(window.innerHeight);
     const { store } = useContext(Context);
     const [modalShow, setModalShow] = React.useState(false);
     const history = useHistory();
@@ -36,6 +39,11 @@ function SideBar() {
     const Logout = () => {
         store.logout();
     }
+
+    const addPatient = () => {
+        history.push('/addPatient')
+    }
+
     return (
         <SideNav
             onToggle ={() => {
@@ -46,7 +54,7 @@ function SideBar() {
                     setExpended(false)
                 }    
             }}
-            style={{ backgroundColor: '#212529', minWidth: expended ? '280px' : '64px'}}
+            style={{ backgroundColor: '#212529', minWidth: expended ? '280px' : '64px', position: 'fixed', maxHeight: windowHeight}}
             onSelect={(selected) => {
             }}
         >
@@ -95,6 +103,11 @@ function SideBar() {
                                 Измерить давление пациенту
                             </NavText>
                         </NavItem>
+                        <NavItem eventKey="distancTonom/izmerit-davlen" onClick={addPatient}>
+                            <NavText>
+                                Зарегестрировать пациента
+                            </NavText>
+                        </NavItem>
                         <NavItem eventKey="distancTonom/pokaz-stat" onClick={showMeasure}>
                             <NavText>
                                 Показать статистику измерений
@@ -111,7 +124,7 @@ function SideBar() {
                 }
                 { 
                 store.user.is_admin ?
-                    <NavItem style={{cursor:'pointer'}}>
+                    <NavItem style={{cursor:'pointer'}} onClick={showAdministration}>
                         <NavIcon>
                             <Icon.Gear className="px-1 pb-1" size={30}/>
                         </NavIcon>

@@ -15,7 +15,7 @@ function Monitoring() {
   return (
     <>
         <Header/>
-          <div>
+          <div style={{paddingLeft: '72px'}}>
             <Container>
               <Row className="justify-content-center align-items-center">
                   <Col md={8} lg={6} xs={12}>

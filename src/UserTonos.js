@@ -9,11 +9,13 @@ import { Context } from '.';
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import FileService from './services/FileService';
+import TonosService from './services/TonosService'
 
 function UserTonos() {
     const [sys, setSys] = useState();
     const [dia, setDia] = useState();
     const [pul, setPul] = useState();
+    const [deviceId, setId] = useState();
     const { store } = useContext(Context);
     useEffect (() => {
       
@@ -25,7 +27,7 @@ function UserTonos() {
     const handleShow = () => setModalShow(true);
     const [modalShow, setModalShow] = React.useState(false);
 
-    const print = async () => {
+    /* const print = async () => {
       const state = {
         sys: sys,
         dia: dia,
@@ -33,7 +35,7 @@ function UserTonos() {
       }
 
       const response = await FileService.print(state)
-    }
+    } */
 
     const connectNew = async () => {
       await navigator.bluetooth.requestDevice({
@@ -45,7 +47,7 @@ function UserTonos() {
           device.addEventListener('gattserverdisconnected', onDisconnected);
           getValues();
         });
-        
+        setId(store.device.id);
         console.log(store.device)
     };
     function onDisconnected() {
@@ -84,6 +86,7 @@ function UserTonos() {
                 var val = event.target.value;
                 //console.log(val)
                 value = parseValue(val);
+                console.log(value)
                 setDia(value.DIA) 
                 setSys(value.SYS)
                 setPul(value.PUL)
@@ -125,11 +128,14 @@ function UserTonos() {
     }
     return result;
   }  
+  const sendResults = () => {
+    TonosService.sendResults(sys, dia, pul, deviceId)
+  }
     
     return (
         <>
         <Header/>
-          <div>
+          <div  style={{paddingLeft: '72px'}}>
             <Container>
               <div className="mt-5 vh-100 justify-content-center align-items-center">
                 <Row className="justify-content-center align-items-center">
@@ -185,14 +191,14 @@ function UserTonos() {
                 </Row>
                 <Row>
                   <div className="d-flex my-5 align-items-center justify-content-center">
-                    <Button className='mx-3 btn-primary btn-lg px-5 py-3'>Передать данные</Button>
+                    <Button className='mx-3 btn-primary btn-lg px-5 py-3' onClick={sendResults}>Передать данные</Button>
                   </div>
                 </Row>
-                <Row>
+                {/* <Row>
                   <div className="d-flex my-5 align-items-center justify-content-center">
-                    <Button className='mx-3 btn-primary btn-lg px-5 py-3' onClick={print}>Распечатать данные</Button>
+                    <Button className='mx-3 btn-primary btn-lg px-5 py-3' onClick={}>Распечатать данные</Button>
                   </div>
-                </Row>
+                </Row> */}
               </div>
             </Container>
           </div>

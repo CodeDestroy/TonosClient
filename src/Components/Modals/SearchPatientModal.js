@@ -21,33 +21,27 @@ function SearchPatientModal(props) {
           <Form.Control />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form>
-            {['radio'].map((type) => (
-              <div key={`reverse-${type}`} className="mb-3">
                 <Form.Check
                   label="ФИО"
                   name="group1"
-                  type={type}
-                  id={`reverse-${type}-1`}
+                  type={'radio'}
+                  id={`reverse-radio-1`}
                  
                 />
                 <Form.Check
                   label="Полис"
                   name="group1"
-                  type={type}
-                  id={`reverse-${type}-2`}
+                  type={'radio'}
+                  id={`reverse-radio-2`}
                   
                 />
                 <Form.Check
                   name="group1"
                   label="Снилс"
-                  type={type}
-                  id={`reverse-${type}-3`}
+                  type={'radio'}
+                  id={`reverse-radio-3`}
                   
                 />
-              </div>
-            ))}
-          </Form>
         </Form.Group>
       </Form>
     </Modal.Body>
