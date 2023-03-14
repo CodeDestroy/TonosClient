@@ -6,6 +6,7 @@ import Monitoring from '../../Monitoring';
 import Administration from '../../Administration';
 import UserTonosMonitoring from '../../UserTonosMonitoring';
 import AddPatient from '../../AddPatient';
+import AdministrationUsers from '../../AdministrationUsers';
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
             <Route exact path="/administration" component={Administration}/>
             <Route exact path="/userMeasure" component={UserTonosMonitoring}/>
             <Route exact path="/addPatient" component={AddPatient}/>
+            <Route exact path="/userAdmin" component={AdministrationUsers}/>
         </Switch>
       </BrowserRouter>
     </>

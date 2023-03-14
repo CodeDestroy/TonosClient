@@ -30,14 +30,15 @@ export default class Store {
     
     async login (login, password){
         try {
-            const response = await AuthService.login(login, password);   
-            //console.log(response)      
+            const response = await AuthService.login(login, password);     
             localStorage.setItem('token', response.data.accessToken);
             this.setAuth(true);
             this.setUser(await userDto.deserialize(response.data.user));
+            return response
         }
         catch (e) {
             console.log(e)
+            return (e)
         }
     }
 
@@ -80,7 +81,6 @@ export default class Store {
             await axios.get(`http://localhost:5000/auth/refresh`, {withCredentials: true})
             .then(async (response) => {
                 localStorage.setItem('token', response.data.accessToken);
-                console.log(response.data.user)
                 this.setUser(await userDto.deserialize(response.data.user));
                 this.setAuth(true);
 

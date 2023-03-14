@@ -32,6 +32,11 @@ function AddPatient() {
   const [gender, setGender] = useState('')
   const [adress, setAdress] = useState('')
   const [district, setDistrict] = useState('')
+  const [ login, setLogin ] = useState('')
+  const [ password , setPassword] = useState('')
+
+  const [ showPatients, setShowPatients ] = useState(null)
+
   const getData = (val) => {
     // do not forget to bind getData in constructor
     //console.log(val);
@@ -47,14 +52,26 @@ function AddPatient() {
   }
 
   const changePatient = event => {
+    
     setPatientId(event.currentTarget.id)
     handleShowPatient()
+    
   }
   useEffect (() => {
     //console.log(patients)
   }, [patients])
-  const register = () => {
-    TonosService.regPatient(secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district)
+  const register = async () => {
+    const patient = await TonosService.regPatient(secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district, login, password)
+    let c = []
+    c.push(patient.data)
+    setPatients(c)
+    //patients.push(patient.data)
+    setShowPatients(true)
+    changeExisting()
+  }
+
+  const createAcc = () => {
+
   }
 
   return (
@@ -65,7 +82,7 @@ function AddPatient() {
           <Form.Check 
             type='switch'
             id={`default-checkbox`}
-            label={`Пациент уже был зарегестрирован`}
+            label={`Пациент уже был добавлен`}
             onChange={changeExisting}
           />
           {
@@ -174,6 +191,28 @@ function AddPatient() {
                       <option value="9">Воронеж. Поликлинника №7</option>
                   </Form.Select>
                 </div>
+                <Form.Label htmlFor="basic-email">Логин</Form.Label>
+                <InputGroup className="mb-3">
+                  <Form.Control 
+                    placeholder="Логин"
+                    aria-label="Логин" 
+                    id="basic-login" 
+                    onChange={(e) => setLogin(e.target.value)}
+                    value={login}
+                  />
+                </InputGroup>
+                <Form.Label htmlFor="basic-email">Пароль</Form.Label>
+                <InputGroup className="mb-3">
+                  <Form.Control 
+                    placeholder="Пароль"
+                    aria-label="Пароль" 
+                    type="password"
+                    id="basic-pass" 
+                    required={true}
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                  />
+                </InputGroup>
               </Row>
               <Row>
                 <Col>
@@ -187,14 +226,14 @@ function AddPatient() {
               <Row className="justify-content-center align-items-center my-3">
                 <Col>
                   <Button variant="primary" onClick={handleShow} className='mx-3 btn-primary btn-lg'>
-                    Выбрать пациента
+                    Найти пациента
                   </Button>
                   
                 </Col>
               </Row>
           }
           {
-            patients.length > 0 ?
+            (patients.length > 0 || showPatients) ?
             <>
               <Table striped bordered hover>
                 <thead>
@@ -209,7 +248,7 @@ function AddPatient() {
                 </thead>
                 <tbody>
                   {
-                  patients.map((patient) => 
+                  patients.map((patient, index) => 
                     <tr key={`tr_${patient.id}`}>
                       <td key={`td_${patient.id}`}>{patient.id}</td>
                       <td key={`td_${patient.surname}_surname`}>{patient.surname}</td>
@@ -217,7 +256,11 @@ function AddPatient() {
                       <td key={`td_${patient.patronomic_name}_patr_name`}>{patient.patronomic_name}</td>
                       <td key={`td_${patient.snils}`}>{patient.snils}</td>
                       <td key={`td_${patient.polis}`}>{patient.polis}</td>
-                      <td key={`td_${patient.id}_change_btn`}><Button id={patient.id} onClick={changePatient}>Изменить</Button></td>
+                      <td key={`td_${patient.id}_change_btn`}>
+                        <Button id={index} onClick={changePatient}>Изменить</Button>
+                        <Button id={index} onClick={createAcc}>Создать аккаунт</Button>  
+                      </td>
+
                     </tr>
                   )
                   }
@@ -230,7 +273,7 @@ function AddPatient() {
           } 
         </div>
       </Container>
-      { patients[patientId-1] &&  <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId-1]} onHide={() => setModalChangePatientShow(false)}/>}
+      { patients[patientId] &&  <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId]} onHide={() => setModalChangePatientShow(false)}/>}
       
       <SearchPatientModal show={modalShow} sendData={getData} onHide={() => setModalShow(false)}/>
       
