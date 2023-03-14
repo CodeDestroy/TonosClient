@@ -1,14 +1,9 @@
-
+/* 
 class UserDto {
 
     async deserialize(payload){
         const result = {
             id: parseInt(payload.id),
-            is_admin: payload.is_admin,
-            is_blocked: payload.is_blocked,
-            is_boss: payload.is_boss,
-            is_secretar: payload.is_secretar,
-            is_system: payload.is_system,
             login: payload.login,
             password: payload.password,
             uirs_users_id: payload.uirs_users_id,
@@ -31,6 +26,40 @@ class UserDto {
             small_name_dp: payload.small_name_dp,
             birthday: payload.birthday,
             doctor_id: payload.doctor_id
+        }
+        return (result)
+    }
+}
+
+module.exports = new UserDto();
+ */
+
+
+class UserDto {
+
+    async deserialize(payload){
+        const result = {
+            id: parseInt(payload.id),
+            login: payload.login,
+            password: payload.password,
+            uirs_users_id: payload.uirs_users_id,
+            //payload
+            role: payload.role,
+            uirs_users_db_id: payload.uirs_users_db_id,
+            //payload
+            patient_id: payload.patient_id,
+            doctor_id: payload.doctor_id,
+            //payload
+            tabel_num: payload.tabel_num,
+            surname: payload.surname,
+            name: payload.name,
+            patronomic_name: payload.patronomic_name,
+            phone: payload.phone,
+            email: payload.email,
+            birth_date: payload.birth_date,
+            med_post_id: payload.med_post_id,
+            full_name: payload.full_name,
+            gender_id: payload.gender_id,
         }
         return (result)
     }

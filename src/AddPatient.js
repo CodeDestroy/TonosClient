@@ -1,29 +1,42 @@
-import React, {useState} from 'react'
-import { Container, Row, Col, Button, InputGroup, Form } from 'react-bootstrap'
+import React, {useEffect, useState} from 'react'
+import { Container, Row, Col, Button, InputGroup, Form, Table } from 'react-bootstrap'
 import Header from './Components/Header'
 import SearchPatientModal from './Components/Modals/SearchPatientModal';
+import ChangePatientModal from './Components/Modals/ChangePatientModal';
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 import DatePicker from "react-datepicker";
 import ru from 'date-fns/locale/ru';
 import "react-datepicker/dist/react-datepicker.css";
 import TonosService from './services/TonosService';
+
+
 function AddPatient() {
 
   const handleShow = () => setModalShow(true);
   const [modalShow, setModalShow] = useState(false);
-  
+
+  const handleShowPatient = () => setModalChangePatientShow(true);
+  const [modalChangePatientShow, setModalChangePatientShow] = useState(false);
+
+  const [patients, setPatients] = useState([])
+  const [ patientId, setPatientId ] = useState(0)
   const [exists, setExists] = useState(false);
-  const [secondName, setSecondName] = useState()
-  const [firstName, setFirstName] = useState()
-  const [patronomicName, setPatronomicName] = useState()
-  const [phone, setPhone] = useState()
-  const [email, setEmail] = useState()
-  const [snils, setSnils] = useState()
-  const [polis, setPolis] = useState()
+  const [secondName, setSecondName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [patronomicName, setPatronomicName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [snils, setSnils] = useState('')
+  const [polis, setPolis] = useState('')
   const [birthDate, setBirthDate] = useState(new Date());
-  const [gender, setGender] = useState()
-  const [adress, setAdress] = useState()
-  const [district, setDistrict] = useState()
+  const [gender, setGender] = useState('')
+  const [adress, setAdress] = useState('')
+  const [district, setDistrict] = useState('')
+  const getData = (val) => {
+    // do not forget to bind getData in constructor
+    //console.log(val);
+    setPatients(val.data)
+  }  
   const changeExisting = () => {
     if (exists) {
       setExists(false)
@@ -33,6 +46,13 @@ function AddPatient() {
     }
   }
 
+  const changePatient = event => {
+    setPatientId(event.currentTarget.id)
+    handleShowPatient()
+  }
+  useEffect (() => {
+    //console.log(patients)
+  }, [patients])
   const register = () => {
     TonosService.regPatient(secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district)
   }
@@ -172,10 +192,46 @@ function AddPatient() {
                   
                 </Col>
               </Row>
+          }
+          {
+            patients.length > 0 ?
+            <>
+              <Table striped bordered hover>
+                <thead>
+                  <tr key='0'>
+                    <th key='th_1'>#</th>
+                    <th key='th_2'>Фамилия</th>
+                    <th key='th_3'>Имя</th>
+                    <th key='th_4'>Отчество</th>
+                    <th key='th_5'>СНИЛС</th>
+                    <th key='th_6'>Полис</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                  patients.map((patient) => 
+                    <tr key={`tr_${patient.id}`}>
+                      <td key={`td_${patient.id}`}>{patient.id}</td>
+                      <td key={`td_${patient.surname}_surname`}>{patient.surname}</td>
+                      <td key={`td_${patient.name}_name`}>{patient.name}</td>
+                      <td key={`td_${patient.patronomic_name}_patr_name`}>{patient.patronomic_name}</td>
+                      <td key={`td_${patient.snils}`}>{patient.snils}</td>
+                      <td key={`td_${patient.polis}`}>{patient.polis}</td>
+                      <td key={`td_${patient.id}_change_btn`}><Button id={patient.id} onClick={changePatient}>Изменить</Button></td>
+                    </tr>
+                  )
+                  }
+                  <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId-1]} onHide={() => setModalChangePatientShow(false)}/>
+                </tbody>
+              </Table>
+            </>
+            :
+            <></> 
           } 
         </div>
       </Container>
-      <SearchPatientModal show={modalShow} onHide={() => setModalShow(false)}/>
+      <SearchPatientModal show={modalShow} sendData={getData} onHide={() => setModalShow(false)}/>
+      
     </>
 
   )

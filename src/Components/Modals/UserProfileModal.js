@@ -18,7 +18,7 @@ function UserProfileModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>{store.user.famil + ' ' + store.user.name + ' ' + store.user.otch}</h4>
+        <h4>{store.user.full_name}</h4>
         <p>
           Инфорамация
         </p>

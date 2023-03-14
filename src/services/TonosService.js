@@ -12,4 +12,8 @@ export default class TonosService {
         return $api.post('/getResults', {SYS, DIA, PUL, deviceId});
     }
 
+    static async findPatientByChoice(label, choice) {
+        return $api.post('/findPatientByChoice', {label, choice})
+    }
+
 }

@@ -67,7 +67,7 @@ function SideBar() {
                     <NavText>Главная</NavText>
                 </NavItem>
                 { 
-                store.user.is_admin ? 
+                store.user.role != 2 ? 
                     <NavItem eventKey="statistic">
                         <NavIcon>
                             <Icon.GraphUp className="px-1 pb-1" size={30}/>
@@ -90,7 +90,7 @@ function SideBar() {
                     <></>
                 }
                 { 
-                store.user.is_admin ?
+                store.user.role != 2 ?
                     <NavItem eventKey="distancTonom" >
                         <NavIcon>
                             <Icon.HeartPulse className="px-1 pb-1" size={30}/>
@@ -123,7 +123,7 @@ function SideBar() {
                     </NavItem>
                 }
                 { 
-                store.user.is_admin ?
+                store.user.role != 2 ?
                     <NavItem style={{cursor:'pointer'}} onClick={showAdministration}>
                         <NavIcon>
                             <Icon.Gear className="px-1 pb-1" size={30}/>
