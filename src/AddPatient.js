@@ -221,7 +221,7 @@ function AddPatient() {
                     </tr>
                   )
                   }
-                  <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId-1]} onHide={() => setModalChangePatientShow(false)}/>
+                 
                 </tbody>
               </Table>
             </>
@@ -230,6 +230,8 @@ function AddPatient() {
           } 
         </div>
       </Container>
+      { patients[patientId-1] &&  <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId-1]} onHide={() => setModalChangePatientShow(false)}/>}
+      
       <SearchPatientModal show={modalShow} sendData={getData} onHide={() => setModalShow(false)}/>
       
     </>

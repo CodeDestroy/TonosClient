@@ -6,6 +6,9 @@ function ChangePatientModal(props) {
   const [ findLabel, setFindLabel ] = useState('')
   const [ choice, setChoice ] = useState('')
   const [ selected, setSelected ] = useState(true)
+
+  const [secondName, setSecondName] = useState(props.patient.surname)
+
   const findPatient = async () => {
     if (choice > 2) 
       setSelected(false)
@@ -16,7 +19,7 @@ function ChangePatientModal(props) {
     }
   }
 
-  
+
 
   return (
     <Modal
@@ -33,23 +36,36 @@ function ChangePatientModal(props) {
     <Modal.Body>
       <Form>
         { props.patient && 
-            <ul>
-                <li key={`${props.patient.surname}_surname`}>
-                    {props.patient.surname}
-                </li>
-                <li key={`${props.patient.surname}_name`}>
-                    {props.patient.name}
-                </li>
-                <li key={`${props.patient.surname}_patronomic_name`}>
-                    {props.patient.patronomic_name}
-                </li>
-                <li key={`${props.patient.surname}_snils`}>
-                    {props.patient.snils}
-                </li>
-                <li key={`${props.patient.surname}_polis`}>
-                    {props.patient.polis}
-                </li>
-            </ul>
+            <>
+              <Form.Label htmlFor="basic-email">Фамилия</Form.Label>
+                <InputGroup className="mb-3">
+                  <Form.Control
+                    placeholder="Фамилия"
+                    aria-label="Фамилия"
+                    aria-describedby="basic-addon1"
+                    onChange={e => setSecondName(e.target.value)}
+                    value={secondName}
+                  />
+                </InputGroup>
+                {/* <ul>
+                  <li key={`${props.patient.surname}_surname`}>
+                      {props.patient.surname}
+                  </li>
+                  <li key={`${props.patient.surname}_name`}>
+                      {props.patient.name}
+                  </li>
+                  <li key={`${props.patient.surname}_patronomic_name`}>
+                      {props.patient.patronomic_name}
+                  </li>
+                  <li key={`${props.patient.surname}_snils`}>
+                      {props.patient.snils}
+                  </li>
+                  <li key={`${props.patient.surname}_polis`}>
+                      {props.patient.polis}
+                  </li>
+              </ul> */}
+            </>
+            
         }
         
       </Form>
@@ -58,7 +74,7 @@ function ChangePatientModal(props) {
       <Button variant="secondary" onClick={props.onHide}>
         Закрыть
       </Button>
-      <Button variant="primary" onClick={findPatient}>Найти</Button>
+      <Button variant="primary" >Сохранить изменения</Button>
     </Modal.Footer>
   </Modal>
   )
