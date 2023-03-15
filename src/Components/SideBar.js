@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import * as Icon from 'react-bootstrap-icons';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
@@ -105,7 +105,7 @@ function SideBar() {
                         </NavItem>
                         <NavItem eventKey="distancTonom/izmerit-davlen" onClick={addPatient}>
                             <NavText>
-                                Зарегестрировать пациента
+                                Добавить нового пациента
                             </NavText>
                         </NavItem>
                         <NavItem eventKey="distancTonom/pokaz-stat" onClick={showMeasure}>

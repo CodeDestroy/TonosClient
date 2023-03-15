@@ -9,6 +9,7 @@ function Login() {
     const [User_nick, setUser_nick] = useState('');
     const [User_pass, setUser_pass] = useState('');
     const { store } = useContext(Context);
+    const [ error, setError] = useState(null);
 
 
     useEffect (() => {
@@ -17,9 +18,18 @@ function Login() {
         }
     })
 
-    const Login = () => {
-        store.login(User_nick, User_pass);
+    const Login = async () => {
+        const res = await store.login(User_nick, User_pass);
+        
+        if (res.response.status == 401) {
+            console.log(res.response.status)
+            setError(res.response.data)
+        }
+        
+        //console.log(res)
     }
+
+
 
   return (
     <div>
@@ -32,6 +42,7 @@ function Login() {
                             <div className="mb-3 mt-md-4">
                                 <h2 className="fw-bold mb-2 text-uppercase ">Тонометрия</h2>
                                 <p className=" mb-5">Войдите в систему для продолжения</p>
+                                {error && <p style={{color: 'red'}}>{error}</p>}
                                 <div className="mb-3">
                                     <Form>
                                         <Form.Group className="mb-3" controlId="formBasicEmail">

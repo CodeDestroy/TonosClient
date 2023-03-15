@@ -4,8 +4,8 @@ import {AxiosResponse} from 'axios'
 
 export default class TonosService {
 
-    static async regPatient(secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district) {
-        return $api.post('/reg-patient', {secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district})
+    static async regPatient(secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district, login, password) {
+        return $api.post('/reg-patient', {secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district, login, password})
     }
 
     static async sendResults (SYS, DIA, PUL, deviceId){
