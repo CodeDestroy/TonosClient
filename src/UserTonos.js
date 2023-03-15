@@ -147,7 +147,7 @@ function UserTonos() {
                       <SearchPatientModal show={modalShow} onHide={() => setModalShow(false)}/>
                     </div>
                   </Col>
-                  <Col md={8} lg={6} xs={12}>
+                  <Col  md={8} lg={6} xs={12}>
                     <div className="d-flex my-5 align-items-center justify-content-center">
                       <Button className='mx-3 btn-primary btn-lg' onClick={connectNew}>Подключить устройство</Button>
                     </div>

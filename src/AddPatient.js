@@ -260,7 +260,6 @@ function AddPatient() {
                         <Button id={index} onClick={changePatient}>Изменить</Button>
                         <Button id={index} onClick={createAcc}>Создать аккаунт</Button>  
                       </td>
-
                     </tr>
                   )
                   }
