@@ -78,7 +78,6 @@ function Header() {
                 :
                 <></>
               } */}
-              
               <NavDropdown title={store.user.full_name} style={{color: '#fff', marginLeft: 'auto'}} id="navbarScrollingDropdown">
                 <NavDropdown.Item onClick={() => setModalShow(true)}>Профиль</NavDropdown.Item>
                 <NavDropdown.Divider />

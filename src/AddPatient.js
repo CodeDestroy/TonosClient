@@ -209,7 +209,7 @@ function AddPatient() {
                 </thead>
                 <tbody>
                   {
-                  patients.map((patient) => 
+                  patients.map((patient, index) => 
                     <tr key={`tr_${patient.id}`}>
                       <td key={`td_${patient.id}`}>{patient.id}</td>
                       <td key={`td_${patient.surname}_surname`}>{patient.surname}</td>
@@ -217,7 +217,7 @@ function AddPatient() {
                       <td key={`td_${patient.patronomic_name}_patr_name`}>{patient.patronomic_name}</td>
                       <td key={`td_${patient.snils}`}>{patient.snils}</td>
                       <td key={`td_${patient.polis}`}>{patient.polis}</td>
-                      <td key={`td_${patient.id}_change_btn`}><Button id={patient.id} onClick={changePatient}>Изменить</Button></td>
+                      <td key={`td_${patient.id}_change_btn`}><Button id={index} onClick={changePatient}>Изменить</Button></td>
                     </tr>
                   )
                   }
@@ -230,7 +230,7 @@ function AddPatient() {
           } 
         </div>
       </Container>
-      { patients[patientId-1] &&  <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId-1]} onHide={() => setModalChangePatientShow(false)}/>}
+      { patients[patientId] &&  <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId]} onHide={() => setModalChangePatientShow(false)}/>}
       
       <SearchPatientModal show={modalShow} sendData={getData} onHide={() => setModalShow(false)}/>
       
