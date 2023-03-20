@@ -8,7 +8,10 @@ import DatePicker from "react-datepicker";
 import ru from 'date-fns/locale/ru';
 import "react-datepicker/dist/react-datepicker.css";
 import TonosService from './services/TonosService';
-
+import FileService from './services/FileService';
+import { saveAs } from "file-saver";
+import AcceptPatient from './Components/Modals/AcceptPatient';
+import * as Icon from 'react-bootstrap-icons';
 
 function AddPatient() {
 
@@ -18,8 +21,11 @@ function AddPatient() {
   const handleShowPatient = () => setModalChangePatientShow(true);
   const [modalChangePatientShow, setModalChangePatientShow] = useState(false);
 
+  const handleShowAccepting = () => showAcceptPatient(true)
+  const [ modalAcceptPatient, showAcceptPatient ] = useState(false)
+
   const [patients, setPatients] = useState([])
-  const [ patientId, setPatientId ] = useState(0)
+  const [ patientId, setPatientId ] = useState(-1)
   const [exists, setExists] = useState(false);
   const [secondName, setSecondName] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -50,7 +56,10 @@ function AddPatient() {
       setExists(true)
     }
   }
-
+  const accpetPatient = event => {
+    setPatientId(event.currentTarget.id)
+    handleShowAccepting()
+  }
   const changePatient = event => {
     
     setPatientId(event.currentTarget.id)
@@ -73,6 +82,16 @@ function AddPatient() {
   const createAcc = () => {
 
   }
+  const print = async () => {
+    const state = {
+      sys: 120,
+      dia: 80,
+      pul: 60,
+    }
+
+    const response = await FileService.print(state)
+    
+  }
 
   return (
     <>
@@ -82,7 +101,7 @@ function AddPatient() {
           <Form.Check 
             type='switch'
             id={`default-checkbox`}
-            label={`Пациент уже был добавлен`}
+            label={`Повторный приём`}
             onChange={changeExisting}
           />
           {
@@ -181,7 +200,7 @@ function AddPatient() {
                   <Form.Control onChange={e => setAdress(e.target.value)} value={adress} as="textarea" aria-label="Адрес" />
                 </InputGroup>
                 <div className="d-flex my-3">
-                  <Form.Select onChange={e => {console.log(`district ${e.target.value}`); setDistrict(e.target.value);}} aria-label="Район прописки">
+                  <Form.Select onChange={e => {setDistrict(e.target.value);}} aria-label="Район прописки">
                       <option>Район прописки</option>
                       <option value="4">Воронеж</option>
                       <option value="5">Лиски</option>
@@ -217,7 +236,7 @@ function AddPatient() {
               <Row>
                 <Col>
                   <Button className='btn-lg' onClick={register}>
-                    Зарегестрировать
+                    Зарегистрировать
                   </Button>
                 </Col>  
               </Row>  
@@ -257,8 +276,10 @@ function AddPatient() {
                       <td key={`td_${patient.snils}`}>{patient.snils}</td>
                       <td key={`td_${patient.polis}`}>{patient.polis}</td>
                       <td key={`td_${patient.id}_change_btn`}>
-                        <Button id={index} onClick={changePatient}>Изменить</Button>
-                        <Button id={index} onClick={createAcc}>Создать аккаунт</Button>  
+                        <Button id={index} onClick={accpetPatient}>Принять пациента</Button>
+                        <Button id={index} onClick={changePatient}>
+                          <Icon.PencilFill width={'20px'}/>
+                        </Button>
                       </td>
                     </tr>
                   )
@@ -272,7 +293,12 @@ function AddPatient() {
           } 
         </div>
       </Container>
-      { patients[patientId] &&  <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId]} onHide={() => setModalChangePatientShow(false)}/>}
+      { patients[patientId] && 
+        <>
+          <ChangePatientModal show={modalChangePatientShow} patient={patients[patientId]} onHide={() => setModalChangePatientShow(false)}/>
+          <AcceptPatient show={modalAcceptPatient} patient={patients[patientId]} onHide={() => showAcceptPatient(false)}/>
+        </>
+      }
       
       <SearchPatientModal show={modalShow} sendData={getData} onHide={() => setModalShow(false)}/>
       

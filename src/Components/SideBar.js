@@ -15,6 +15,10 @@ function SideBar() {
 
     const [expended, setExpended] = React.useState(false);
 
+    const addTonometr =() => {
+        history.push('/addTonometr')
+    }
+
     const showTonometr = () => {
         history.push("/userTonometr");
     }
@@ -35,6 +39,10 @@ function SideBar() {
         history.push('/administration')
     }
 
+    const showPersonalSettings = () => {
+        history.push('/personalSettings')
+    }
+
 
     const Logout = () => {
         store.logout();
@@ -43,6 +51,13 @@ function SideBar() {
     const addPatient = () => {
         history.push('/addPatient')
     }
+
+    const userAdmin = () => {
+        history.push('/userAdmin')
+    }
+    const showTonosStat = () => {
+        history.push("/tonosStat")
+      }
 
     return (
         <SideNav
@@ -67,7 +82,7 @@ function SideBar() {
                     <NavText>Главная</NavText>
                 </NavItem>
                 { 
-                store.user.role != 2 ? 
+                store.user.role == 3 || store.user.role == 1  ? 
                     <NavItem eventKey="statistic">
                         <NavIcon>
                             <Icon.GraphUp className="px-1 pb-1" size={30}/>
@@ -98,14 +113,9 @@ function SideBar() {
                         <NavText>
                             Дистанционная тонометрия
                         </NavText>
-                        <NavItem eventKey="distancTonom/izmerit-davlen" onClick={showTonometr}>
+                        <NavItem eventKey="distancTonom/addPatient" onClick={addPatient}>
                             <NavText>
-                                Измерить давление пациенту
-                            </NavText>
-                        </NavItem>
-                        <NavItem eventKey="distancTonom/izmerit-davlen" onClick={addPatient}>
-                            <NavText>
-                                Добавить нового пациента
+                                Принять пациента
                             </NavText>
                         </NavItem>
                         <NavItem eventKey="distancTonom/pokaz-stat" onClick={showMeasure}>
@@ -115,24 +125,99 @@ function SideBar() {
                         </NavItem>
                     </NavItem>
                     :
-                    <NavItem style={{cursor:'pointer'}} onClick={showTonometr}>
+                    <NavItem  eventKey="distancTonom" style={{cursor:'pointer'}}>
                         <NavIcon>
                             <Icon.HeartPulse className="px-1 pb-1" size={30}/>
                         </NavIcon>
                         <NavText>Дистанционная тонометрия</NavText>
+                        <NavItem eventKey="distancTonom/pokaz-stat" onClick={showTonometr}>
+                            <NavText>
+                                Измерить давление
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="distancTonom/pokaz-stat" onClick={showTonosStat}>
+                            <NavText>
+                                Показать статистику измерений
+                            </NavText>
+                        </NavItem>
                     </NavItem>
                 }
-                { 
+                {/* Administration */}
+                {
+                    
+                    store.user.role == 1 && 
+                    <NavItem onDoubleClick={showAdministration} eventKey="administration">
+                        <NavIcon>
+                            <Icon.Gear className="px-1 pb-1" size={30}/>
+                        </NavIcon>
+                        <NavText>
+                            Администрирование
+                        </NavText>
+                        <NavItem eventKey="administration/add-patient">
+                            <NavText>
+                                Добавить нового пациента
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="administration/person-setting" onClick={showPersonalSettings}>
+                            <NavText>
+                                Персональные настройки
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="administration/admin-patient" onClick={showAdministration}>
+                            <NavText>
+                                Администрирование пациентов
+                            </NavText>
+                        </NavItem>
+                    </NavItem>
+                }
+                {
+                store.user.role == 3 && 
+                    <NavItem onDoubleClick={showAdministration} eventKey="administration">
+                        <NavIcon>
+                            <Icon.Gear className="px-1 pb-1" size={30}/>
+                        </NavIcon>
+                        <NavText>
+                            Администрирование
+                        </NavText>
+                        <NavItem onClick={addTonometr} eventKey="administration/add-patient">
+                            <NavText>
+                                Зарегестрировать новый тонометр
+                            </NavText>
+                        </NavItem>
+                        <NavItem onClick={userAdmin} eventKey="administration/add-patient">
+                            <NavText>
+                                Администрировани пользователей
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="administration/admin-roles">
+                            <NavText>
+                                Администрирование ролей пользователей
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="administration/person-setting" onClick={showPersonalSettings}>
+                            <NavText>
+                                Персональные настройки
+                            </NavText>
+                        </NavItem>
+                    </NavItem>
+                }
+                {/* { 
                 store.user.role != 2 ?
-                    <NavItem style={{cursor:'pointer'}} onClick={showAdministration}>
+                    <NavItem  eventKey="administartion" style={{cursor:'pointer'}} onDoubleClick={showAdministration}>
+                        
                         <NavIcon>
                             <Icon.Gear className="px-1 pb-1" size={30}/>
                         </NavIcon>
                         <NavText>Администрирование</NavText>
+                        <NavItem eventKey="administartion/addPatient" onClick={addPatient}>
+                            <NavText>
+                                Добавить нового пациента
+                            </NavText>
+                        </NavItem>
                     </NavItem>
                     :
                     <></>
-                }
+                } */}
                 <NavItem style={{cursor:'pointer', position: 'absolute', bottom: '10px'}} onClick={Logout}>
                     <NavIcon>
                         <Icon.Escape className="px-1 pb-1" size={30}/>

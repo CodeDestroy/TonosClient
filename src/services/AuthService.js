@@ -14,4 +14,8 @@ export default class AuthService {
     static async logout () {
         return $api.post('/auth/logout');
     }
+
+    static async getDoctor (user_id) {
+        return $api.post('/auth/getDoctorByUserId', {user_id})
+    }
 }

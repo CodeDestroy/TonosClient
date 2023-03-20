@@ -4,10 +4,10 @@ import TonosService from '../../services/TonosService'
 
 function SearchPatientModal(props) {
   const [ findLabel, setFindLabel ] = useState('')
-  const [ choice, setChoice ] = useState('')
+  const [ choice, setChoice ] = useState(-1)
   const [ selected, setSelected ] = useState(true)
   const findPatient = async () => {
-    if (choice > 2) 
+    if (choice > 2 || choice < 0) 
       setSelected(false)
     else {
       const patients = await TonosService.findPatientByChoice(findLabel, choice)

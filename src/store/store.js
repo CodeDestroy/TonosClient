@@ -9,7 +9,7 @@ export default class Store {
     user = {};
     isAuth = false;
     device = {};
-
+    
     constructor () {
         makeAutoObservable(this);
     }
@@ -23,9 +23,10 @@ export default class Store {
         this.user = user;
     }
 
-    setDevice (device) {
-        this.device = device;
+    setDevice(device) {
+        this.device = device
     }
+
 
     
     async login (login, password){
@@ -42,7 +43,7 @@ export default class Store {
         }
     }
 
-    async registration (login, password, User_name, User_surname, User_patronomic, Doctor_id){
+   /*  async registration (login, password, User_name, User_surname, User_patronomic, Doctor_id){
         try {
             const response = await AuthService.registrarion(login, password, User_name, User_surname, User_patronomic, Doctor_id);
             localStorage.setItem('token', response.data.accessToken);
@@ -52,7 +53,7 @@ export default class Store {
         catch (e) {
             console.log(e)
         }
-    }
+    } */
 
     async logout (){
         try {

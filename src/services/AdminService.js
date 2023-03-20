@@ -7,5 +7,9 @@ export default class AdminService {
         return $api.post('/admin/showAllUsers', {page, count});
     }
 
+    static async findUsers(label, choice) {
+        return $api.post('/admin/findUsers', {label, choice})
+    }
+
     
 }

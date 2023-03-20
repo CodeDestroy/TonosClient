@@ -2,7 +2,7 @@
 import React from 'react'
 import './Components/Css/UserTonos.css'
 import { useState, useContext, useEffect } from 'react';
-import { Button, Col, Container, Row, Dropdown, ButtonGroup, DropdownButton, Modal, Form  } from 'react-bootstrap';
+import { Button, Col, Container, Row, Dropdown, ButtonGroup, DropdownButton, Modal, Form, Card  } from 'react-bootstrap';
 import Header from './Components/Header';
 import SearchPatientModal from './Components/Modals/SearchPatientModal';
 import { Context } from '.';
@@ -48,7 +48,6 @@ function UserTonos() {
           getValues();
         });
         setId(store.device.id);
-        console.log(store.device)
     };
     function onDisconnected() {
       getValues();
@@ -86,7 +85,6 @@ function UserTonos() {
                 var val = event.target.value;
                 //console.log(val)
                 value = parseValue(val);
-                console.log(value)
                 setDia(value.DIA) 
                 setSys(value.SYS)
                 setPul(value.PUL)
@@ -129,7 +127,7 @@ function UserTonos() {
     return result;
   }  
   const sendResults = () => {
-    TonosService.sendResults(sys, dia, pul, deviceId)
+    TonosService.sendResults(sys, dia, pul, deviceId, store.user.patient_id)
   }
     
     return (
@@ -139,14 +137,14 @@ function UserTonos() {
             <Container>
               <div className="mt-5 vh-100 justify-content-center align-items-center">
                 <Row className="justify-content-center align-items-center">
-                  <Col md={8} lg={6} xs={12}>
+                  {/* <Col md={8} lg={6} xs={12}>
                     <div className="d-flex my-5 align-items-center justify-content-center">
                       <Button variant="primary" onClick={handleShow} className='mx-3 btn-primary btn-lg'>
                         Выбрать пациента
                       </Button>
                       <SearchPatientModal show={modalShow} onHide={() => setModalShow(false)}/>
                     </div>
-                  </Col>
+                  </Col> */}
                   <Col  md={8} lg={6} xs={12}>
                     <div className="d-flex my-5 align-items-center justify-content-center">
                       <Button className='mx-3 btn-primary btn-lg' onClick={connectNew}>Подключить устройство</Button>
@@ -199,6 +197,18 @@ function UserTonos() {
                     <Button className='mx-3 btn-primary btn-lg px-5 py-3' onClick={}>Распечатать данные</Button>
                   </div>
                 </Row> */}
+                
+                  <Card  style={{ width: '50rem', height: '18rem', marginLeft: '15.5rem' }} className ="align-items-center justify-content-center">
+                    <Card.Header as="h5">Как измерить давление и передать данные?</Card.Header>
+                      <Card.Body>
+                          <Card.Text>1. Включите тонометр и зажмите кнопку "Старт" на тонометре</Card.Text>
+                          <Card.Text>2. Нажмите кнопку "Подключить устройство" на экране компьютера/телефона</Card.Text>
+                          <Card.Text>3. В открывшемся окне выберите ваш тонометр и подключитесь к нему</Card.Text>
+                          <Card.Text>4. Дождитесь пока тонометр выполнит измерение и данные отобразятся на экране компьютера/телефона</Card.Text>
+                          <Card.Text>5. Нажмите кнопку "Передать данные" на экране компьютера/телефона</Card.Text>   
+                      </Card.Body>
+                  </Card>
+            
               </div>
             </Container>
           </div>

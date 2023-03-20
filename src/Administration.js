@@ -15,7 +15,7 @@ function Administration() {
         <Container style={{paddingLeft: '72px'}}>
           <Card style={{ width: '18rem', height: '20rem' }} className ="my-5">
             <Card.Body>
-              <Row d-flex my-5 align-items-center justify-content-center>
+              <Row className="d-flex my-5 align-items-center justify-content-center">
                 <Button variant="primary" className ="my-3">Персональные настройки</Button>
                 <Button variant="primary" className ="my-3" onClick={showUserAdmin}>Админитрование пользователей</Button>
                 <Button variant="primary" className ="my-3">Администрирование ролей пользователей</Button>
