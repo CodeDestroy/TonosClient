@@ -5,6 +5,7 @@ import RegisterUser from './Components/Modals/RegisterUser';
 import SearchUserModal from './Components/Modals/SearchUserModal';
 import AdminService from './services/AdminService'
 import * as Icon from 'react-bootstrap-icons';
+import { PaginationControl } from 'react-bootstrap-pagination-control';
 
 function AdministrationUsers() {
     const handleShowSearch = () => setModalShowSearch(true);
@@ -14,6 +15,18 @@ function AdministrationUsers() {
     const [modalRegisterUserModalShow, setModalRegisterUserModalShow] = useState(false);
 
 
+    const [ currentPage, setCurrentPage ] = useState(1)
+    const [ numPages, setNumPages ] = useState(null)
+
+    const getCountUsers = () => {
+        AdminService.getCountUsers()
+        .then((result) => {
+            setNumPages(result.data.length);
+            fetchData();
+        })
+        
+    }
+
     const [users, setUsers] = useState([])
     const getData = (val) => {
         // do not forget to bind getData in constructor
@@ -21,13 +34,13 @@ function AdministrationUsers() {
         setUsers(val.data)
     } 
 
-    const fetchData = async () => {
-        const users = await AdminService.showAllUsers(1, 10)
-        console.log(users)
+    const fetchData = async (page) => {
+        const users = await AdminService.showAllUsers(page, 10)
         setUsers(users.data)
     }
     useEffect(() => { 
-        fetchData();
+        getCountUsers()
+        //fetchData();
     }, [])
     return (
         <>
@@ -50,7 +63,7 @@ function AdministrationUsers() {
                                 <Table striped hover>
                                     <thead>
                                     <tr key='0'>
-                                        <th>#</th>
+                                        <th key='th_0'>#</th>
                                         <th key='th_1'>Пациент/Врач/Админ.</th>
                                         <th key='th_2'>Логин</th>
                                         <th key='th_3'>Фамилия</th>
@@ -85,11 +98,7 @@ function AdministrationUsers() {
                                                     </tr>
                                                     
                                                 </>
-                                            )
-                                                
-                                                    
-                                                    
-                                                
+                                            )       
                                         }
                                         else {
                                             return (
@@ -121,10 +130,22 @@ function AdministrationUsers() {
                                     
                                     </tbody>
                                 </Table>
+                                <PaginationControl
+                                    page={currentPage}
+                                    between={4}
+                                    total={numPages}
+                                    limit={10}
+                                    changePage={async (page) => {
+                                        setCurrentPage(page); 
+                                        await fetchData(page);
+                                    }}            
+                                    ellipsis={1}
+                                />
                             </>
                         :
                         <></>
                     }
+                    
                     
                 </Row>
                 

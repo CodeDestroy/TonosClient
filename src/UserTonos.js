@@ -2,13 +2,9 @@
 import React from 'react'
 import './Components/Css/UserTonos.css'
 import { useState, useContext, useEffect } from 'react';
-import { Button, Col, Container, Row, Dropdown, ButtonGroup, DropdownButton, Modal, Form, Card  } from 'react-bootstrap';
+import { Button, Col, Container, Row, Card  } from 'react-bootstrap';
 import Header from './Components/Header';
-import SearchPatientModal from './Components/Modals/SearchPatientModal';
 import { Context } from '.';
-import axios from 'axios';
-import { saveAs } from 'file-saver';
-import FileService from './services/FileService';
 import TonosService from './services/TonosService'
 
 function UserTonos() {
@@ -16,6 +12,7 @@ function UserTonos() {
     const [dia, setDia] = useState();
     const [pul, setPul] = useState();
     const [deviceId, setId] = useState();
+    const [deviceName, setName] = useState();
     const { store } = useContext(Context);
     useEffect (() => {
       
@@ -44,10 +41,13 @@ function UserTonos() {
         optionalServices: [0x2A35, 0x180A, 0x1810],
         }).then(device => {
           store.setDevice(device);
+          
           device.addEventListener('gattserverdisconnected', onDisconnected);
           getValues();
         });
+        console.log(store.device)
         setId(store.device.id);
+        setName(store.device.name)
     };
     function onDisconnected() {
       getValues();
@@ -127,7 +127,7 @@ function UserTonos() {
     return result;
   }  
   const sendResults = () => {
-    TonosService.sendResults(sys, dia, pul, deviceId, store.user.patient_id)
+    TonosService.sendResults(sys, dia, pul, deviceId, store.user.patient_id, deviceName)
   }
     
     return (
@@ -192,23 +192,22 @@ function UserTonos() {
                     <Button className='mx-3 btn-primary btn-lg px-5 py-3' onClick={sendResults}>Передать данные</Button>
                   </div>
                 </Row>
-                {/* <Row>
-                  <div className="d-flex my-5 align-items-center justify-content-center">
-                    <Button className='mx-3 btn-primary btn-lg px-5 py-3' onClick={}>Распечатать данные</Button>
-                  </div>
-                </Row> */}
-                
-                  <Card  style={{ width: '50rem', height: '18rem', marginLeft: '15.5rem' }} className ="align-items-center justify-content-center">
-                    <Card.Header as="h5">Как измерить давление и передать данные?</Card.Header>
-                      <Card.Body>
-                          <Card.Text>1. Включите тонометр и зажмите кнопку "Старт" на тонометре</Card.Text>
-                          <Card.Text>2. Нажмите кнопку "Подключить устройство" на экране компьютера/телефона</Card.Text>
-                          <Card.Text>3. В открывшемся окне выберите ваш тонометр и подключитесь к нему</Card.Text>
-                          <Card.Text>4. Дождитесь пока тонометр выполнит измерение и данные отобразятся на экране компьютера/телефона</Card.Text>
-                          <Card.Text>5. Нажмите кнопку "Передать данные" на экране компьютера/телефона</Card.Text>   
-                      </Card.Body>
-                  </Card>
-            
+                  <Row className='align-items-center justify-content-center'>
+                    <Col md={8}>
+                      <Card className ="align-items-center justify-content-center">
+                        <Card.Header as="h5">Как измерить давление и передать данные?</Card.Header>
+                          <Card.Body>
+                            <Row>
+                              <Card.Text className="my-3">1. Включите тонометр и зажмите кнопку "Старт" на тонометре</Card.Text>
+                              <Card.Text>2. Нажмите кнопку "Подключить устройство" на экране компьютера/телефона</Card.Text>
+                              <Card.Text className="mb-3">3. В открывшемся окне выберите ваш тонометр и подключитесь к нему</Card.Text>
+                              <Card.Text>4. Дождитесь пока тонометр выполнит измерение и данные отобразятся на экране компьютера/телефона</Card.Text>
+                              <Card.Text>5. Нажмите кнопку "Передать данные" на экране компьютера/телефона</Card.Text>
+                            </Row>
+                          </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
               </div>
             </Container>
           </div>

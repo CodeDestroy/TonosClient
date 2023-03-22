@@ -2,16 +2,16 @@
 import React from 'react'
 import './Components/Css/UserTonos.css'
 import { useState, useContext, useEffect } from 'react';
-import { Button, Col, Container, Row, Dropdown, ButtonGroup, DropdownButton, Modal, Form, InputGroup, OverlayTrigger, Popover, Table  } from 'react-bootstrap';
+import { Button, Col, Container, Row, Form, InputGroup, OverlayTrigger, Popover, Table  } from 'react-bootstrap';
 import Header from './Components/Header';
 import * as Icon from 'react-bootstrap-icons';
 import { Context } from '.';
-import axios from 'axios';
 import TonosService from './services/TonosService'
 
 function AddTonometr() {
     const [deviceId, setId] = useState(null);
     const [device, setDevice] = useState(null)
+    const [ deviceName, setName ] = useState(null)
     const { store } = useContext(Context);
     useEffect (() => {
       
@@ -29,7 +29,10 @@ function AddTonometr() {
         optionalServices: [0x2A35, 0x180A, 0x1810],
         }).then(device => {
             device.gatt.connect()
+            console.log(device)
             setId(device.id)
+            setName(device.name)
+            console.log(device.name, deviceName)
           device.addEventListener('gattserverdisconnected', onDisconnected);
         });
     };
@@ -38,9 +41,10 @@ function AddTonometr() {
     }
 
   const sendResults = async () => {
-    if (deviceId != undefined) {
+    if (deviceId != undefined && deviceName != undefined) {
       try {
-        const response = await TonosService.addTonometr(deviceId, serialNum)
+        console.log(deviceName)
+        const response = await TonosService.addTonometr(deviceId, serialNum, deviceName)
         console.log(response)
         setDevice(response.data)
       }
@@ -54,7 +58,7 @@ function AddTonometr() {
         <>
         <Header/>
           <div  style={{paddingLeft: '72px'}}>
-            <Container>
+            <Container className='mt-5'>
               {!device ? 
                 <>
                   <div className="mt-5 vh-100 justify-content-center align-items-center">
@@ -119,6 +123,7 @@ function AddTonometr() {
                         <th key='th_1'>#</th>
                         <th key='th_2'>Серийный номер</th>
                         <th key='th_3'>Bluetoth Id</th>
+                        <th key='th_4'>Название тонометра</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -126,6 +131,7 @@ function AddTonometr() {
                         <td>{device.id}</td>
                         <td>{device.serial_number}</td>
                         <td>{device.bluetoth_id}</td>
+                        <td>{device.name}</td>
                       </tr>
                     </tbody>
                   </Table>

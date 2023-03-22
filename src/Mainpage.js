@@ -18,10 +18,6 @@ function Mainpage() {
     }
   }, [store])
 
-  /* useEffect(() => {
-    
-  }, []) */
-
   const getDoctor = async () => {
     if (store.user) {
       const response = await AuthService.getDoctor(store.user.patient_id)
@@ -87,7 +83,6 @@ function Mainpage() {
                           <Card.Text>Должность: {doctor.med_post}</Card.Text>
                       </Row>
                     }
-                    
                   </Card.Body>
                 </Card>
               </Col>
@@ -95,39 +90,6 @@ function Mainpage() {
           }
         </Container>
     </>
-
-      // <>
-      //     <Header/>
-      //     <div className='align-items-center justify-content-around' style={{paddingLeft: '72px'}}>
-      //     <Container className=''>
-      //       <Row>
-      //         <Col md={8} lg={6} xs={12} className='btn-group' >
-      //           <Button className="btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '300px', maxWidth: '320px'}}>
-      //             Статистика Врач -&gt; Пациент
-      //           </Button>
-      //         </Col>
-      //         <Col md={8} lg={6} xs={12} className='btn-group' >
-      //           <Button onClick={showTonometr} className="btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '300px', maxWidth: '320px'}}>
-      //             Дистанционная тонометрия
-      //           </Button>
-      //         </Col>
-      //       </Row>
-      //       <Row>
-      //         <Col md={8} lg={6} xs={12} className='btn-group' >
-      //           <Button onClick={showMonitoring} className="btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '300px', maxWidth: '320px'}}>
-      //             Мониторинг ключевых показателей
-      //           </Button>
-      //         </Col>
-      //         <Col md={8} lg={6} xs={12} className='btn-group'>
-      //           <Button className="btn-secondary btn-lg px-2 " style={{minHeight: '140px', minWidth: '300px', maxWidth: '320px'}}>
-      //             Справочники
-      //           </Button>
-      //         </Col>
-      //       </Row>
-      //     </Container>
-      //     </div>
-      // </>
-    
   )
 }
 

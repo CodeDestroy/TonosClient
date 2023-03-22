@@ -1,19 +1,21 @@
 import $api from "../http";
-import {AxiosResponse} from 'axios'
-//import { AuthResponse } from "../models/response/AuthResponse";
 
 export default class TonosService {
+
+    static async getDistricts() {
+        return $api.get('/getDistricts');
+    }
 
     static async regPatient(secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district, login, password) {
         return $api.post('/reg-patient', {secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district, login, password})
     }
 
-    static async sendResults (SYS, DIA, PUL, deviceId, patient_id){
-        return $api.post('/getResults', {SYS, DIA, PUL, deviceId, patient_id});
+    static async sendResults (SYS, DIA, PUL, deviceId, patient_id, deviceName){
+        return $api.post('/getResults', {SYS, DIA, PUL, deviceId, patient_id, deviceName});
     }
     
-    static async addTonometr (tonometr_id, serialNum){
-        return $api.post('/addTonometr', {tonometr_id, serialNum});
+    static async addTonometr (tonometr_id, serialNum, deviceName){
+        return $api.post('/addTonometr', {tonometr_id, serialNum, deviceName});
     }
 
     static async findTonometrByBtId (bt_id) {

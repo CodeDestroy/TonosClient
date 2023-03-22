@@ -7,6 +7,10 @@ export default class AdminService {
         return $api.post('/admin/showAllUsers', {page, count});
     }
 
+    static async getCountUsers () {
+        return $api.get('/admin/getCountUsers')
+    }
+
     static async findUsers(label, choice) {
         return $api.post('/admin/findUsers', {label, choice})
     }

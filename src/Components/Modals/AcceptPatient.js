@@ -1,4 +1,4 @@
-import { Container, InputGroup, Form, Button, Row, Col, Modal } from 'react-bootstrap'
+import { Form, Button, Modal } from 'react-bootstrap'
 import React, { useEffect, useState, useContext } from 'react'
 import TonosService from '../../services/TonosService'
 import { Context } from '../..';
@@ -55,12 +55,11 @@ export default function AcceptPatient(props) {
     }, [deviceId])
 
     const endAccepting = async () => {
-        const state = {
+        /* const state = {
             DATE_DOC: Date.now(),
-
-
-        }
-        const response = await TonosService.addAppointment(patient.id, store.user.id, device.id)
+        } */
+        console.log(store.user)
+        const response = await TonosService.addAppointment(patient.id, store.user.doctor_id, device.id)
         setAppointment(response.data)
     }
 

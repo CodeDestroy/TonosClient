@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { Table, Button, Container, Row, Col, Card, Pagination } from 'react-bootstrap'
+import { Table, Container, Row } from 'react-bootstrap'
 import Header from './Components/Header'
-import { useHistory } from "react-router-dom";
 import { Context } from '.';
 import TonosService from './services/TonosService';
 import { PaginationControl } from 'react-bootstrap-pagination-control';

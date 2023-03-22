@@ -8,8 +8,7 @@ import DatePicker from "react-datepicker";
 import ru from 'date-fns/locale/ru';
 import "react-datepicker/dist/react-datepicker.css";
 import TonosService from './services/TonosService';
-import FileService from './services/FileService';
-import { saveAs } from "file-saver";
+/* import FileService from './services/FileService'; */
 import AcceptPatient from './Components/Modals/AcceptPatient';
 import * as Icon from 'react-bootstrap-icons';
 
@@ -42,6 +41,13 @@ function AddPatient() {
   const [ password , setPassword] = useState('')
 
   const [ showPatients, setShowPatients ] = useState(null)
+  const [ districts, setDistricts ] = useState([])
+
+  useEffect(() => {
+    TonosService.getDistricts().then((result) => {
+      setDistricts(result.data)
+    })
+  }, [])
 
   const getData = (val) => {
     // do not forget to bind getData in constructor
@@ -79,10 +85,7 @@ function AddPatient() {
     changeExisting()
   }
 
-  const createAcc = () => {
-
-  }
-  const print = async () => {
+  /* const print = async () => {
     const state = {
       sys: 120,
       dia: 80,
@@ -91,7 +94,7 @@ function AddPatient() {
 
     const response = await FileService.print(state)
     
-  }
+  } */
 
   return (
     <>
@@ -202,12 +205,12 @@ function AddPatient() {
                 <div className="d-flex my-3">
                   <Form.Select onChange={e => {setDistrict(e.target.value);}} aria-label="Район прописки">
                       <option>Район прописки</option>
-                      <option value="4">Воронеж</option>
-                      <option value="5">Лиски</option>
-                      <option value="6">Новая Усмань</option>
-                      <option value="7">Россошь</option>
-                      <option value="8">Борисоглебск</option>
-                      <option value="9">Воронеж. Поликлинника №7</option>
+                      {
+                        districts && 
+                          districts.map((district, index) => 
+                            <option value={district.id}>{district.name}</option>
+                          )
+                      }
                   </Form.Select>
                 </div>
                 <Form.Label htmlFor="basic-email">Логин</Form.Label>
