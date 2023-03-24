@@ -42,19 +42,22 @@ function Mainpage() {
     <>
       <Header/>
         <Container className='align-items-center justify-content-around' style={{marginTop: '10em', paddingLeft: '72px'}}>
-          
+        { store.user.role == 2 && 
           <Row className='mx-5 my-5'>
             <Col className='my-3 flex-column align-items-center justify-content-around'>
               <Button className="main-btn btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '246px', maxWidth: '320px'}} onClick={showTonosStat}>
                 Статистика измерений
               </Button>
-            </Col>
+            </Col>  
+            
+            
             <Col className='my-3 flex-column align-items-center justify-content-around'>
               <Button onClick={showTonometr} className="main-btn btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '246px', maxWidth: '320px'}}>
                 Дистанционная тонометрия
               </Button>
             </Col>
           </Row>
+        }
           { store.user.role != 2 &&
             <Row className='mx-5 my-5'>
               <Col className='my-3 flex-column align-items-center justify-content-around'>

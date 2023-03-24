@@ -3,17 +3,21 @@ import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { useState, useContext, useEffect } from 'react';
 import { Context } from '..';
 import { observer } from 'mobx-react-lite';
+import AuthService from '../services/AuthService';
+import { useHistory } from "react-router-dom";
+
 function Login() {
 
-    
+    const history = useHistory()
     const [User_nick, setUser_nick] = useState('');
     const [User_pass, setUser_pass] = useState('');
     const { store } = useContext(Context);
     const [ error, setError] = useState(null);
-
+    history.push("/")
 
     useEffect (() => {
         if (localStorage.getItem('token')) {
+            //console.log(localStorage.getItem('token'))
             store.checkAuth();
         }
     })
@@ -21,14 +25,17 @@ function Login() {
     const Login = async () => {
         const res = await store.login(User_nick, User_pass);
         
-        if (res.response.status == 401) {
+        /* if (res.response.status == 401) {
             console.log(res.response.status)
             setError(res.response.data)
-        }
+        } */
         
         //console.log(res)
     }
 
+    const registration = async () => {
+        await AuthService.registrarion('test4', 'test4', 1, 3)
+    } 
 
 
   return (
@@ -87,7 +94,7 @@ function Login() {
                                     <div className="mt-3">
                                         <p className="mb-0  text-center">
                                             Не зарегестрированы?{" "}
-                                            <a href="{''}" className="text-primary fw-bold">
+                                            <a onClick={registration} className="text-primary fw-bold">
                                                 Зарегистрирроваться
                                             </a>
                                         </p>

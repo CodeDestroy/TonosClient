@@ -35,7 +35,7 @@ module.exports = new UserDto();
  */
 
 
-class UserDto {
+/* export default  */class UserDto {
 
     async deserialize(payload){
         const result = {
