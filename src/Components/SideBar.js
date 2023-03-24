@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from 'react'
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import * as Icon from 'react-bootstrap-icons';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import './Css/SideBar.css';
 import { Navbar } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 import { Context } from '..';
@@ -127,9 +128,9 @@ function SideBar() {
                     :
                     <NavItem  eventKey="distancTonom" style={{cursor:'pointer'}}>
                         <NavIcon>
-                            <Icon.HeartPulse className="px-1 pb-1" size={30}/>
+                            <Icon.HeartPulse className="px-1 pb-1" size={30}/> 
                         </NavIcon>
-                        <NavText>Дистанционная тонометрия</NavText>
+                        <NavText style={{lineHeight: '30px'}}>Дистанционная тонометрия</NavText>
                         <NavItem eventKey="distancTonom/pokaz-stat" onClick={showTonometr}>
                             <NavText>
                                 Измерить давление

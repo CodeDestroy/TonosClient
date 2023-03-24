@@ -13,7 +13,7 @@ function Login() {
     const [User_pass, setUser_pass] = useState('');
     const { store } = useContext(Context);
     const [ error, setError] = useState(null);
-    history.push("/")
+    
 
     useEffect (() => {
         if (localStorage.getItem('token')) {
@@ -24,7 +24,7 @@ function Login() {
 
     const Login = async () => {
         const res = await store.login(User_nick, User_pass);
-        
+        history.push("/")
         /* if (res.response.status == 401) {
             console.log(res.response.status)
             setError(res.response.data)

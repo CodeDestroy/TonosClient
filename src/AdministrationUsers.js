@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Row, Table, Col } from 'react-bootstrap'
+import { Form, Button, Container, Row, Table, Col } from 'react-bootstrap'
 import Header from './Components/Header'
 import RegisterUser from './Components/Modals/RegisterUser';
 import SearchUserModal from './Components/Modals/SearchUserModal';
 import AdminService from './services/AdminService'
 import * as Icon from 'react-bootstrap-icons';
 import { PaginationControl } from 'react-bootstrap-pagination-control';
+import ChangeUserModal from './Components/Modals/ChangeUserModal'
+import Multiselect from 'multiselect-react-dropdown';
 
 function AdministrationUsers() {
     const handleShowSearch = () => setModalShowSearch(true);
@@ -14,9 +16,28 @@ function AdministrationUsers() {
     const handleShowRegistration = () => setModalRegisterUserModalShow(true);
     const [modalRegisterUserModalShow, setModalRegisterUserModalShow] = useState(false);
 
+    const handleShowUserEdit = () => setModalUserEdit(true);
+    const [modalUserEdit, setModalUserEdit] = useState(false);
 
     const [ currentPage, setCurrentPage ] = useState(1)
     const [ numPages, setNumPages ] = useState(null)
+
+    const [userId, setUserId] = useState(null)
+
+
+    const state = {
+        options: [{name: 'Врач', id: 1},{name: 'Пациент', id: 2}, ,{name: 'Администратор', id: 3}]
+    };
+
+
+    function onSelect(selectedList, selectedItem) {
+        console.log(state.options[0])
+
+    }
+    
+    function onRemove(selectedList, removedItem) {
+        console.log(selectedList)
+    }
 
     const getCountUsers = () => {
         AdminService.getCountUsers()
@@ -42,6 +63,11 @@ function AdministrationUsers() {
         getCountUsers()
         //fetchData();
     }, [])
+
+    const changeUser = event => {
+        setUserId(event.currentTarget.id)
+        handleShowUserEdit()
+    }
     return (
         <>
             <Header/>
@@ -64,7 +90,31 @@ function AdministrationUsers() {
                                     <thead>
                                     <tr key='0'>
                                         <th key='th_0'>#</th>
-                                        <th key='th_1'>Пациент/Врач/Админ.</th>
+                                        <th key='th_1'>{/* Пациент/Врач/Админ. */}
+                                        <Multiselect
+                                            options={state.options} // Options to display in the dropdown
+                                            selectedValues={[state.options[0]]} // Preselected value to persist in dropdown
+                                            onSelect={onSelect} // Function will trigger on select event
+                                            onRemove={onRemove} // Function will trigger on remove event
+                                            displayValue="name" // Property name to display in the dropdown options
+                                            placeholder="Параметры поиска"
+                                            style={{
+                                                chips: {
+                                                  /* background: 'red', */
+                                                  borderRadius: '0px'
+                                                },
+                                                multiselectContainer: {
+                                                    width: '80%'
+                                                  /* color: 'red' */
+                                                },
+                                                searchBox: {
+                                                  border: 'none',
+                                                  'border-bottom': '1px solid blue',
+                                                  'border-radius': '0px'
+                                                }
+                                              }}
+                                        />
+                                        </th>
                                         <th key='th_2'>Логин</th>
                                         <th key='th_3'>Фамилия</th>
                                         <th key='th_4'>Имя</th>
@@ -113,8 +163,8 @@ function AdministrationUsers() {
                                                         <td>{user.p_birth_date}</td>
                                                         <td>{user.p_phone}</td>
                                                         <td>
-                                                            <Button>
-                                                            <Icon.PencilFill width={'20px'}/>
+                                                            <Button id={index} onClick={changeUser}>
+                                                                <Icon.PencilFill width={'20px'}/>
                                                             </Button>
                                                         </td>
                                                         
@@ -141,6 +191,8 @@ function AdministrationUsers() {
                                     }}            
                                     ellipsis={1}
                                 />
+                                {userId && <ChangeUserModal user={users[userId]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/>}
+                            
                             </>
                         :
                         <></>

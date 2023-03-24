@@ -6,8 +6,8 @@ import TonosService from './services/TonosService';
 import { PaginationControl } from 'react-bootstrap-pagination-control';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as Icon from 'react-bootstrap-icons'
-function TonosStat() {
 
+function TonosStat() {
     const { store } = useContext(Context);
     const [ measures, setMeasures ] = useState([])
     const [ numPages, setNumPages ] = useState(null)
@@ -31,7 +31,7 @@ function TonosStat() {
     }
     const getAllMeasures = async (order = 'id_desc') => {
         if (store.user) {
-          const response = await TonosService.getAllMeasuresByPatientId(store.user.patient_id, currentPage, order)
+          const response = await TonosService.getAllMeasuresByPatientId(store.user.patient_id, currentPage, order);
           setMeasures(response.data)
           //setNumPages(response.data.length)
           
