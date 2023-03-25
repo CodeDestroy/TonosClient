@@ -69,38 +69,39 @@ function AddTonometr() {
                         </div>
                       </Col>
                     </Row>
-                    <Row>
+                    <Row style={{marginLeft: 'auto', marginRight: 'auto', maxWidth: '500px'}}>
                       {error && <p style={{color: 'red'}}>{error}</p>}
-                        
-                        <Form.Label htmlFor="basic-email">Серийный номер устройства</Form.Label>
-                        
-                        <InputGroup className="mb-3">
-                            <Form.Control 
-                                placeholder="Серийный номер"
-                                aria-label="Серийный номер" 
-                                id="basic-sn" 
-                                required={true}
-                                onChange={(e) => setSerialNum(e.target.value)}
-                                value={serialNum}
-                            />
-                            <OverlayTrigger
-                                delay={{ show: 250, hide: 400 }}
-                                trigger={["hover", "hover"]}
-                                key={`popOver`}
-                                placement={'top'}
-                                overlay={
-                                    <Popover id={`popover-positioned-top`}>
-                                    <Popover.Header as="h3">{`Серийный номер`}</Popover.Header>
-                                    <Popover.Body>
-                                        <strong>Располагается на нижней части тонометра после "SN"</strong>
-                                    </Popover.Body>
-                                    </Popover>
-                                }
-                                >
-                                <Icon.PatchQuestion className='mt-1 mx-1' width={'30px'} height={'30px'}></Icon.PatchQuestion>    
-                            </OverlayTrigger>
-                            
-                        </InputGroup>
+                        <Col  >
+                          <Form.Label htmlFor="basic-email">Серийный номер устройства</Form.Label>
+                          <InputGroup className="mb-3">
+                              <Form.Control
+                                  /* style={{maxWidth: '500px'}}  */
+                                  placeholder="Серийный номер"
+                                  aria-label="Серийный номер" 
+                                  id="basic-sn" 
+                                  required={true}
+                                  onChange={(e) => setSerialNum(e.target.value)}
+                                  value={serialNum}
+                              />
+                              <OverlayTrigger
+                                  delay={{ show: 250, hide: 400 }}
+                                  trigger={["hover", "hover"]}
+                                  key={`popOver`}
+                                  placement={'top'}
+                                  overlay={
+                                      <Popover id={`popover-positioned-top`}>
+                                      <Popover.Header as="h3">{`Серийный номер`}</Popover.Header>
+                                      <Popover.Body>
+                                          <strong>Располагается на нижней части тонометра после "SN"</strong>
+                                      </Popover.Body>
+                                      </Popover>
+                                  }
+                                  >
+                                  <Icon.PatchQuestion className='mt-1 mx-1' width={'30px'} height={'30px'}></Icon.PatchQuestion>    
+                              </OverlayTrigger>
+                              
+                          </InputGroup>
+                        </Col>
                     </Row>
                     <Row>
                       <div className="d-flex my-5 align-items-center justify-content-center">

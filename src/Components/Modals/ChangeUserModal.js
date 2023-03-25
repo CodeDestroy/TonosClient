@@ -32,8 +32,7 @@ function ChangeUserModal(props) {
     }
   } */
   useEffect(() => {
-    console.log(props.user)
-  }, [])
+  }, [props])
 
 
   return (
@@ -50,6 +49,7 @@ function ChangeUserModal(props) {
     </Modal.Header>
     <Modal.Body>
       <Form>
+        <a>{props.user.uud_login}</a>
         {/* { props.patient && 
             <>
               <Form.Label htmlFor="basic-email">Фамилия</Form.Label>

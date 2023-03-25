@@ -25,18 +25,20 @@ function AdministrationUsers() {
     const [userId, setUserId] = useState(null)
 
 
+
     const state = {
-        options: [{name: 'Врач', id: 1},{name: 'Пациент', id: 2}, ,{name: 'Администратор', id: 3}]
+        options: [{role: 'Врач', id: 1},{role: 'Пациент', id: 2}, {role: 'Администратор', id: 3}]
     };
 
 
-    function onSelect(selectedList, selectedItem) {
-        console.log(state.options[0])
-
+    const onSelect = async (selectedList, selectedItem) => {
+        const users = await AdminService.showAllUsers(currentPage, 10, selectedList)
+        setUsers(users.data)
     }
     
-    function onRemove(selectedList, removedItem) {
-        console.log(selectedList)
+    const onRemove = async (selectedList, removedItem) => {
+        const users = await AdminService.showAllUsers(currentPage, 10, selectedList)
+        setUsers(users.data)
     }
 
     const getCountUsers = () => {
@@ -56,7 +58,7 @@ function AdministrationUsers() {
     } 
 
     const fetchData = async (page) => {
-        const users = await AdminService.showAllUsers(page, 10)
+        const users = await AdminService.showAllUsers(page, 10, [state.options[1]])
         setUsers(users.data)
     }
     useEffect(() => { 
@@ -83,8 +85,7 @@ function AdministrationUsers() {
                     <SearchUserModal show={modalShowSearch} sendData={getData} onHide={() => setModalShowSearch(false)}/>
                 </Row>
                 <Row className='mt-5'>
-                    {
-                        users.length > 0 ? 
+                    
                             <>
                                 <Table striped hover>
                                     <thead>
@@ -93,10 +94,10 @@ function AdministrationUsers() {
                                         <th key='th_1'>{/* Пациент/Врач/Админ. */}
                                         <Multiselect
                                             options={state.options} // Options to display in the dropdown
-                                            selectedValues={[state.options[0]]} // Preselected value to persist in dropdown
+                                            selectedValues={[state.options[1]]} // Preselected value to persist in dropdown
                                             onSelect={onSelect} // Function will trigger on select event
                                             onRemove={onRemove} // Function will trigger on remove event
-                                            displayValue="name" // Property name to display in the dropdown options
+                                            displayValue="role" // Property name to display in the dropdown options
                                             placeholder="Параметры поиска"
                                             style={{
                                                 chips: {
@@ -109,8 +110,8 @@ function AdministrationUsers() {
                                                 },
                                                 searchBox: {
                                                   border: 'none',
-                                                  'border-bottom': '1px solid blue',
-                                                  'border-radius': '0px'
+                                                  borderBottom: '1px solid blue',
+                                                  borderRadius: '0px'
                                                 }
                                               }}
                                         />
@@ -125,57 +126,55 @@ function AdministrationUsers() {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    { 
-                                    users.map((user, index) => {
-                                        if (user.p_id == null) {
-                                            return (
-                                                <>
-                                                    <tr key={`tr_${user.uud_id}`}>
-                                                        <td>{user.uud_id}</td>
-                                                        <td>{user.uu_role_id > 1 ? (user.uu_role_id == 2 ? `Пациент` : `Администратор`) : `Врач`}</td>
-                                                        <td>{user.uud_login}</td>
-                                                        <td>{user.d_surname}</td>
-                                                        <td>{user.d_name}</td>
-                                                        <td>{user.d_patronomic_name}</td>
-                                                        <td>{user.d_birth_date}</td>
-                                                        <td>{user.d_phone}</td>    
-                                                        <td>
-                                                            <Button>
-                                                            <Icon.PencilFill width={'20px'}/>
-                                                            </Button>
-                                                        </td>
-                                                        
-                                                    </tr>
-                                                    
-                                                </>
-                                            )       
-                                        }
-                                        else {
-                                            return (
-                                                <>
-                                                    <tr key={`tr_${user.uud_id}`}>
-                                                        <td>{user.uud_id}</td>
-                                                        <td>{user.uu_role_id > 1 ? (user.uu_role_id == 2 ? `Пациент` : `Администратор`) : `Врач`}</td>
-                                                        <td>{user.uud_login}</td>
-                                                        <td>{user.p_surname}</td>
-                                                        <td>{user.p_name}</td>
-                                                        <td>{user.p_patronomic_name}</td>
-                                                        <td>{user.p_birth_date}</td>
-                                                        <td>{user.p_phone}</td>
-                                                        <td>
-                                                            <Button id={index} onClick={changeUser}>
+                                    { users &&
+                                        users.map((user, index) => {
+                                            if (user.p_id == null) {
+                                                return (
+                                                    <>
+                                                        <tr key={`tr_${user.uud_id}`}>
+                                                            <td>{user.uud_id}</td>
+                                                            <td>{user.uu_role_id > 1 ? (user.uu_role_id == 2 ? `Пациент` : `Администратор`) : `Врач`}</td>
+                                                            <td>{user.uud_login}</td>
+                                                            <td>{user.d_surname}</td>
+                                                            <td>{user.d_name}</td>
+                                                            <td>{user.d_patronomic_name}</td>
+                                                            <td>{user.d_birth_date}</td>
+                                                            <td>{user.d_phone}</td>    
+                                                            <td>
+                                                                <Button id={index} onClick={changeUser}>
                                                                 <Icon.PencilFill width={'20px'}/>
-                                                            </Button>
-                                                        </td>
+                                                                </Button>
+                                                            </td>
+                                                            {/* <ChangeUserModal user={users[index]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/> */}
+                                                        </tr>
                                                         
-                                                    </tr>
-                                                    
-                                                </>
-                                            )
-                                        }
-                                    }
-                                        
-                                    )
+                                                    </>
+                                                )       
+                                            }
+                                            else {
+                                                return (
+                                                    <>
+                                                        <tr key={`tr_${user.uud_id}`}>
+                                                            <td>{user.uud_id}</td>
+                                                            <td>{user.uu_role_id > 1 ? (user.uu_role_id == 2 ? `Пациент` : `Администратор`) : `Врач`}</td>
+                                                            <td>{user.uud_login}</td>
+                                                            <td>{user.p_surname}</td>
+                                                            <td>{user.p_name}</td>
+                                                            <td>{user.p_patronomic_name}</td>
+                                                            <td>{user.p_birth_date}</td>
+                                                            <td>{user.p_phone}</td>
+                                                            <td>
+                                                                <Button id={index} onClick={changeUser}>
+                                                                    <Icon.PencilFill width={'20px'}/>
+                                                                </Button>
+                                                            </td>
+                                                            {/* <ChangeUserModal user={users[index]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/> */}
+                                                        </tr>
+                                                        
+                                                    </>
+                                                )
+                                            }
+                                        })
                                     }
                                     
                                     </tbody>
@@ -191,12 +190,12 @@ function AdministrationUsers() {
                                     }}            
                                     ellipsis={1}
                                 />
-                                {userId && <ChangeUserModal user={users[userId]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/>}
+                                {users[userId] && <ChangeUserModal user={users[userId]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/>}
                             
                             </>
                         :
                         <></>
-                    }
+                    
                     
                     
                 </Row>

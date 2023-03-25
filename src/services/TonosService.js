@@ -39,7 +39,23 @@ export default class TonosService {
     }
 
     static async getCountMeasuresByPatientId (patient_id) {
-        return $api.post('getCountMeasuresByPatientId', {patient_id})
+        return $api.post('/getCountMeasuresByPatientId', {patient_id})
+    }
+
+    static async getCountPatientsByDoctorId (doctor_id) {
+        return $api.post('/getCountPatientsByDoctorId', {doctor_id})
+    }
+    
+    static async getCountMeasuresByDoctorId (doctor_id) {
+        return $api.post('/getCountMeasuresByDoctorId', {doctor_id})
+    }
+
+    static async getPatientsByDoctorId (doctor_id, currentPage, order) {
+        return $api.post('/getPatientsByDoctorId', {doctor_id, currentPage, order})
+    }
+
+    static async getMesuaresByDoctorId (doctor_id, currentPage, order) {
+        return $api.post('/getMesuaresByDoctorId', {doctor_id, currentPage, order})
     }
 
 }

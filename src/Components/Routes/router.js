@@ -11,6 +11,7 @@ import AddTonometr from '../../AddTonometr';
 import PersonalSettings from '../../PersonalSettings';
 import { Context } from '../..';
 import TonosStat from '../../TonosStat';
+import PatientStatistic from "../../PatientStatistic"
 
 function Router() {
   const { store } = useContext(Context);
@@ -33,6 +34,7 @@ function Router() {
             <Route exact path="/userAdmin" component={AdministrationUsers}/>
             <Route exact path='/addTonometr' component={AddTonometr}/>
             <Route exact path="/personalSettings" component={PersonalSettings}/>  
+            <Route exact path="/patientStatistic" component={PatientStatistic}/>
         </Switch>
         :
         <Switch>

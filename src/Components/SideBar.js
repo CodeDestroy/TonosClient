@@ -58,7 +58,11 @@ function SideBar() {
     }
     const showTonosStat = () => {
         history.push("/tonosStat")
-      }
+    }
+
+    /* const showPatientStatistic = () => {
+        history.push('/patientStatistic')
+    } */
 
     return (
         <SideNav
