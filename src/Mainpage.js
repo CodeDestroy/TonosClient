@@ -38,6 +38,10 @@ function Mainpage() {
     history.push("/tonosStat")
   }
 
+  const showMeasure = () => {
+    history.push("/userMeasure")
+  }
+
   return (
     <>
       <Header/>
@@ -61,7 +65,7 @@ function Mainpage() {
           { store.user.role != 2 &&
             <Row className='mx-5 my-5'>
               <Col className='my-3 flex-column align-items-center justify-content-around'>
-                <Button onClick={showMonitoring} className="main-btn btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '246px', maxWidth: '320px'}}>
+                <Button onClick={showMeasure} className="main-btn btn-secondary btn-lg px-2" style={{minHeight: '140px', minWidth: '246px', maxWidth: '320px'}}>
                   Мониторинг ключевых показателей
                 </Button>
               </Col>

@@ -126,33 +126,43 @@ function TonosStat() {
     return (
         <>
             <Header/>
-            <Container className='my-5'>
+            <Container className='my-5' style={{paddingLeft: '65px'}}>
                 <Row>
                     {measures.length > 0 && 
                             <div>
-                                <Table striped hover>
+                                <Table striped hover responsive="md">
                                             <thead>
                                             <tr key='0'>
+                                            {Array.from({ length: 1 }).map((_, index) => (
                                                 <th onClick={orderById} style={{cursor: 'pointer'}}>
                                                     # 
                                                     {order == 'id_desc' ? <Icon.CaretDownSquare className='mx-1'></Icon.CaretDownSquare> : <Icon.CaretUpSquare className='mx-1'></Icon.CaretUpSquare>}
                                                 </th>
+                                            ))}
+                                            {Array.from({ length: 1 }).map((_, index) => (
                                                 <th key='th_1' onClick={orderByDate} style={{cursor: 'pointer'}}>
                                                     Дата измерения
                                                     {order == 'dt_dimension_desc' ? <Icon.CaretDownSquare className='mx-1'></Icon.CaretDownSquare> : <Icon.CaretUpSquare className='mx-1'></Icon.CaretUpSquare>}    
                                                 </th>
+                                            ))}
+                                            {Array.from({ length: 1 }).map((_, index) => (
                                                 <th key='th_2' onClick={orderBySYS} style={{cursor: 'pointer'}}>
                                                     Верхнее давление
                                                     {order == 'upper_pressure_desc' ? <Icon.CaretDownSquare className='mx-1'></Icon.CaretDownSquare> : <Icon.CaretUpSquare className='mx-1'></Icon.CaretUpSquare>} 
                                                 </th>
+                                            ))}
+                                            {Array.from({ length: 1 }).map((_, index) => (
                                                 <th key='th_3' onClick={orderByDIA} style={{cursor: 'pointer'}}>
                                                     Нижнее давление
                                                     {order == 'lower_pressure_desc' ? <Icon.CaretDownSquare className='mx-1'></Icon.CaretDownSquare> : <Icon.CaretUpSquare className='mx-1'></Icon.CaretUpSquare>} 
                                                 </th>
+                                            ))}
+                                            {Array.from({ length: 1 }).map((_, index) => (
                                                 <th key='th_4' onClick={orderByPUL} style={{cursor: 'pointer'}}>
                                                     Пульс
                                                     {order == 'heart_rate_desc' ? <Icon.CaretDownSquare className='mx-1'></Icon.CaretDownSquare> : <Icon.CaretUpSquare className='mx-1'></Icon.CaretUpSquare>} 
                                                 </th>
+                                            ))}
                                             </tr>
                                             </thead>
                                             <tbody>

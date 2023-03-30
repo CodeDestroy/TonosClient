@@ -15,5 +15,9 @@ export default class AdminService {
         return $api.post('/admin/findUsers', {label, choice})
     }
 
+    static async saveChangesToPatient(user) {
+        return $api.post('/admin/saveChangesToPatient', {user})
+    }
+
     
 }

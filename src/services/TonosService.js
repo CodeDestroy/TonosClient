@@ -26,6 +26,10 @@ export default class TonosService {
         return $api.post('/findPatientByChoice', {label, choice})
     }
 
+    static async findPatinetByChoiceAndDoctorId(label, choice, doctor_id) {
+        return $api.post('/findPatinetByChoiceAndDoctorId', {label, choice, doctor_id})
+    }
+
     static async findDoctorByPatientId(patient_id) {
         return $api.post('/findFoctorByPatientId', {patient_id})
     }
@@ -36,6 +40,10 @@ export default class TonosService {
 
     static async getAllMeasuresByPatientId(patient_id, currentPage, order) {
         return $api.post('/getAllMeasuresByPatientId', {patient_id, currentPage, order})
+    }
+
+    static async getAllMeasuresByPatientIdWithDataFormat(patient_id, dateStart, dateEnd) {
+        return $api.post('/getAllMeasuresByPatientIdWithDataFormat', {patient_id, dateStart, dateEnd})
     }
 
     static async getCountMeasuresByPatientId (patient_id) {

@@ -7,7 +7,7 @@ function PersonalSettings() {
   return (
     <>
         <Header/>
-        <Container className='my-5'>
+        <Container className='my-5' style={{paddingLeft: '72px'}}>
             <Card>
                 <Card.Header as="h5">Смена пароля</Card.Header>
                 <Card.Body>

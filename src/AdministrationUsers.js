@@ -24,7 +24,8 @@ function AdministrationUsers() {
 
     const [userId, setUserId] = useState(null)
 
-
+    const handleShowPatient = () => setModalChangePatientShow(true);
+    const [modalChangePatientShow, setModalChangePatientShow] = useState(false);
 
     const state = {
         options: [{role: 'Врач', id: 1},{role: 'Пациент', id: 2}, {role: 'Администратор', id: 3}]
@@ -73,8 +74,8 @@ function AdministrationUsers() {
     return (
         <>
             <Header/>
-            <Container>
-                <Row>
+            <Container style={{paddingLeft: '65px'}}>
+                <Row style={{marginLeft: '10px'}}>
                     <Col md={8} className='mt-5'>
                         <Button onClick={handleShowRegistration}>Зарегестрировать нового пользователя</Button>
                     </Col>
@@ -87,48 +88,67 @@ function AdministrationUsers() {
                 <Row className='mt-5'>
                     
                             <>
-                                <Table striped hover>
+                                <Table striped hover responsive="md">
                                     <thead>
                                     <tr key='0'>
-                                        <th key='th_0'>#</th>
-                                        <th key='th_1'>{/* Пациент/Врач/Админ. */}
-                                        <Multiselect
-                                            options={state.options} // Options to display in the dropdown
-                                            selectedValues={[state.options[1]]} // Preselected value to persist in dropdown
-                                            onSelect={onSelect} // Function will trigger on select event
-                                            onRemove={onRemove} // Function will trigger on remove event
-                                            displayValue="role" // Property name to display in the dropdown options
-                                            placeholder="Параметры поиска"
-                                            style={{
-                                                chips: {
-                                                  /* background: 'red', */
-                                                  borderRadius: '0px'
-                                                },
-                                                multiselectContainer: {
-                                                    width: '80%'
-                                                  /* color: 'red' */
-                                                },
-                                                searchBox: {
-                                                  border: 'none',
-                                                  borderBottom: '1px solid blue',
-                                                  borderRadius: '0px'
-                                                }
-                                              }}
-                                        />
-                                        </th>
-                                        <th key='th_2'>Логин</th>
-                                        <th key='th_3'>Фамилия</th>
-                                        <th key='th_4'>Имя</th>
-                                        <th key='th_5'>Отчество</th>
-                                        <th key='th_6'>Дата рожения</th>
-                                        <th key='th_7'>Телефон</th>
-                                        <th key='th_8'></th>
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_0'>#</th>
+                                        ))}
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_1'>{/* Пациент/Врач/Админ. */}
+                                            <Multiselect
+                                                options={state.options} // Options to display in the dropdown
+                                                selectedValues={[state.options[1]]} // Preselected value to persist in dropdown
+                                                onSelect={onSelect} // Function will trigger on select event
+                                                onRemove={onRemove} // Function will trigger on remove event
+                                                displayValue="role" // Property name to display in the dropdown options
+                                                placeholder="Параметры поиска"
+                                                style={{
+                                                    chips: {
+                                                    /* background: 'red', */
+                                                    borderRadius: '0px'
+                                                    },
+                                                    multiselectContainer: {
+                                                        width: '80%'
+                                                    /* color: 'red' */
+                                                    },
+                                                    searchBox: {
+                                                    border: 'none',
+                                                    borderBottom: '1px solid blue',
+                                                    borderRadius: '0px'
+                                                    }
+                                                }}
+                                            />
+                                            </th>
+                                        ))}
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_2'>Логин</th>
+                                        ))}
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_3'>Фамилия</th>
+                                        ))}
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_4'>Имя</th>
+                                        ))}
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_5'>Отчество</th>
+                                        ))}
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_6'>Дата рожения</th>
+                                        ))}
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_7'>Телефон</th>
+                                        ))}
+                                        {Array.from({ length: 1 }).map((_, index) => (
+                                            <th key='th_8'></th>
+                                        ))}
                                     </tr>
                                     </thead>
                                     <tbody>
                                     { users &&
                                         users.map((user, index) => {
                                             if (user.p_id == null) {
+                                                
                                                 return (
                                                     <>
                                                         <tr key={`tr_${user.uud_id}`}>
@@ -142,7 +162,7 @@ function AdministrationUsers() {
                                                             <td>{user.d_phone}</td>    
                                                             <td>
                                                                 <Button id={index} onClick={changeUser}>
-                                                                <Icon.PencilFill width={'20px'}/>
+                                                                    <Icon.PencilFill width={'20px'}/>
                                                                 </Button>
                                                             </td>
                                                             {/* <ChangeUserModal user={users[index]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/> */}
@@ -152,6 +172,7 @@ function AdministrationUsers() {
                                                 )       
                                             }
                                             else {
+                                                console.log(user)
                                                 return (
                                                     <>
                                                         <tr key={`tr_${user.uud_id}`}>
@@ -166,11 +187,12 @@ function AdministrationUsers() {
                                                             <td>
                                                                 <Button id={index} onClick={changeUser}>
                                                                     <Icon.PencilFill width={'20px'}/>
-                                                                </Button>
+                                                                </Button> 
                                                             </td>
-                                                            {/* <ChangeUserModal user={users[index]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/> */}
+                                                            
                                                         </tr>
-                                                        
+                                                        {users[userId]  &&/*  && <ChangePatientModal show={modalChangePatientShow} patient={users[userId]} onHide={() => setModalChangePatientShow(false)}/> */
+                                                        <ChangeUserModal patient={users[userId]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/>}
                                                     </>
                                                 )
                                             }
@@ -179,7 +201,7 @@ function AdministrationUsers() {
                                     
                                     </tbody>
                                 </Table>
-                                <PaginationControl
+                                <PaginationControl 
                                     page={currentPage}
                                     between={4}
                                     total={numPages}
@@ -190,7 +212,7 @@ function AdministrationUsers() {
                                     }}            
                                     ellipsis={1}
                                 />
-                                {users[userId] && <ChangeUserModal user={users[userId]} show={modalUserEdit} onHide={() => setModalUserEdit(false)}/>}
+                                
                             
                             </>
                         :

@@ -257,15 +257,27 @@ function AddPatient() {
           {
             (patients.length > 0 || showPatients) ?
             <>
-              <Table striped bordered hover>
+              <Table striped bordered hover responsive="md">
                 <thead>
                   <tr key='0'>
-                    <th key='th_1'>#</th>
-                    <th key='th_2'>Фамилия</th>
-                    <th key='th_3'>Имя</th>
-                    <th key='th_4'>Отчество</th>
-                    <th key='th_5'>СНИЛС</th>
-                    <th key='th_6'>Полис</th>
+                    {Array.from({ length: 1 }).map((_, index) => (
+                      <th key='th_1'>#</th>
+                    ))}
+                    {Array.from({ length: 1 }).map((_, index) => (
+                      <th key='th_2'>Фамилия</th>
+                    ))}
+                    {Array.from({ length: 1 }).map((_, index) => (
+                      <th key='th_3'>Имя</th>
+                    ))}
+                    {Array.from({ length: 1 }).map((_, index) => (
+                      <th key='th_4'>Отчество</th>
+                    ))}
+                    {Array.from({ length: 1 }).map((_, index) => (
+                      <th key='th_5'>СНИЛС</th>
+                    ))}
+                    {Array.from({ length: 1 }).map((_, index) => (
+                      <th key='th_6'>Полис</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>

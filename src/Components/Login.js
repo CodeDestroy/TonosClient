@@ -95,7 +95,7 @@ function Login() {
                                         <p className="mb-0  text-center">
                                             Не зарегестрированы?{" "}
                                             <a onClick={registration} className="text-primary fw-bold">
-                                                Зарегистрирроваться
+                                                Зарегистрироваться
                                             </a>
                                         </p>
                                     </div>

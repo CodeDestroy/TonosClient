@@ -1,7 +1,25 @@
 .sidenav---sidenav-subnav---1EN61 > .sidenav---sidenav-subnavitem---1cD47:first-child {
     margin: 0 24px;
     line-height: 30px;
-    border-bottom: 1px #ccc solid;
-    font-size: 14px;
+    border-bottom: 1px  #212529 solid;
+    font-size: 20px;
     font-weight: normal;
   }
+
+.sidenav---navtext---1AE_f {
+  font-size: 15px;
+
+}
+
+.line {
+    border-bottom: 1px solid #ccc;
+}
+
+.sidenav---sidenav-subnav---1EN61 {
+    min-width: 250px;
+}
+
+.sidenav---navitem---9uL5T {
+    padding-left: 0;
+    padding-right: 0;
+}

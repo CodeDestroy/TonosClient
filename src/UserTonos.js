@@ -50,6 +50,7 @@ function UserTonos() {
         setName(store.device.name)
     };
     function onDisconnected() {
+      console.log('disconnected')
       getValues();
     }
     function exponentialBackoff(max, delay, toTry, success, fail) {
@@ -59,6 +60,7 @@ function UserTonos() {
           return fail();
         }
         setTimeout(function() {
+          console.log('set timeout')
           exponentialBackoff(--max, delay * 2, toTry, success, fail);
         }, delay * 1000);
       });
@@ -66,9 +68,11 @@ function UserTonos() {
     const getValues = async () => {
         exponentialBackoff(7, 2, 
         function toTry(){
+          console.log(store.device)
           return store.device.gatt.connect();
         },
         function success(server) {
+          console.log('success')
           server.getPrimaryService(0x1810)
           .then(service => {
             return service.getCharacteristic(0x2A35);

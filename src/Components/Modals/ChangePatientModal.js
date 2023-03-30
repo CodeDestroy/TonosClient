@@ -1,11 +1,14 @@
 import { Container, InputGroup, Form, Button, Row, Col, Modal } from 'react-bootstrap'
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 import DatePicker from "react-datepicker";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TonosService from '../../services/TonosService'
 import ru from 'date-fns/locale/ru';
 
 function ChangePatientModal(props) {
+
+
+
   const [ findLabel, setFindLabel ] = useState('')
   const [ choice, setChoice ] = useState('')
   const [ selected, setSelected ] = useState(true)
@@ -31,6 +34,8 @@ function ChangePatientModal(props) {
       props.onHide();
     }
   }
+
+  
 
 
 
@@ -155,8 +160,7 @@ function ChangePatientModal(props) {
 
                 <div className="d-flex my-3">
                   <Form.Select 
-                    onChange={e => {console.log(`district ${e.target.value}`); 
-                    setDistrict(e.target.value);}} 
+                    onChange={e => {setDistrict(e.target.value);}} 
                     aria-label="Район прописки"
                     defaultValue={district}
                     >

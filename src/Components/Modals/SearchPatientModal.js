@@ -7,14 +7,27 @@ function SearchPatientModal(props) {
   const [ choice, setChoice ] = useState(-1)
   const [ selected, setSelected ] = useState(true)
   const findPatient = async () => {
-    if (choice > 2 || choice < 0) 
-      setSelected(false)
+    if (props.doctor_id != null) {
+      if (choice > 2 || choice < 0) 
+        setSelected(false)
+      else {
+        const patients = await TonosService.findPatinetByChoiceAndDoctorId(findLabel, choice, props.doctor_id)
+        props.sendData(patients);
+        props.onHide();
+      }
+      
+
+    } 
     else {
-      const patients = await TonosService.findPatientByChoice(findLabel, choice)
-      //console.log(patients)
-      props.sendData(patients)
-      props.onHide();
+      if (choice > 2 || choice < 0) 
+        setSelected(false)
+      else {
+        const patients = await TonosService.findPatientByChoice(findLabel, choice)
+        props.sendData(patients)
+        props.onHide();
+      }
     }
+    
   }
 
   

@@ -74,13 +74,13 @@ function SideBar() {
                     setExpended(false)
                 }    
             }}
-            style={{ backgroundColor: '#212529', minWidth: expended ? '280px' : '64px', position: 'fixed', maxHeight: windowHeight}}
+            style={{ backgroundColor: '#212529', minWidth: expended ? '320px' : '64px', position: 'fixed', maxHeight: windowHeight}}
             onSelect={(selected) => {
             }}
         >
             <SideNav.Toggle />
             <SideNav.Nav defaultSelected="home">
-                <NavItem onClick={goToMain} style={{cursor:'pointer'}}>
+                <NavItem className='side-bar-titles' onClick={goToMain} style={{cursor:'pointer'}}>
                     <NavIcon>
                         <Icon.HouseFill className="px-1 pb-1" size={30}/>
                     </NavIcon>
@@ -98,6 +98,11 @@ function SideBar() {
                         <NavItem eventKey="statistic/vrach-pacient">
                             <NavText>
                                 Статистика Врач -&gt; Пациент
+                            </NavText>
+                        </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
                             </NavText>
                         </NavItem>
                         <NavItem eventKey="statistic/kluch-pokazat" onClick={showMonitoring}>
@@ -123,6 +128,11 @@ function SideBar() {
                                 Принять пациента
                             </NavText>
                         </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
+                        </NavItem>
                         <NavItem eventKey="distancTonom/pokaz-stat" onClick={showMeasure}>
                             <NavText>
                                 Показать статистику измерений
@@ -138,6 +148,11 @@ function SideBar() {
                         <NavItem eventKey="distancTonom/pokaz-stat" onClick={showTonometr}>
                             <NavText>
                                 Измерить давление
+                            </NavText>
+                        </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
                             </NavText>
                         </NavItem>
                         <NavItem eventKey="distancTonom/pokaz-stat" onClick={showTonosStat}>
@@ -163,9 +178,19 @@ function SideBar() {
                                 Добавить нового пациента
                             </NavText>
                         </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
+                        </NavItem>
                         <NavItem eventKey="administration/person-setting" onClick={showPersonalSettings}>
                             <NavText>
                                 Персональные настройки
+                            </NavText>
+                        </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
                             </NavText>
                         </NavItem>
                         <NavItem eventKey="administration/admin-patient" onClick={showAdministration}>
@@ -189,14 +214,29 @@ function SideBar() {
                                 Зарегестрировать новый тонометр
                             </NavText>
                         </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
+                        </NavItem>
                         <NavItem onClick={userAdmin} eventKey="administration/add-patient">
                             <NavText>
                                 Администрировани пользователей
                             </NavText>
                         </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
+                        </NavItem>
                         <NavItem eventKey="administration/admin-roles">
                             <NavText>
                                 Администрирование ролей пользователей
+                            </NavText>
+                        </NavItem>
+                        <NavItem className='py-0'>
+                            <NavText>
+                                <div className="line"></div>
                             </NavText>
                         </NavItem>
                         <NavItem eventKey="administration/person-setting" onClick={showPersonalSettings}>

@@ -1,28 +1,35 @@
 import { Container, InputGroup, Form, Button, Row, Col, Modal } from 'react-bootstrap'
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 import DatePicker from "react-datepicker";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import TonosService from '../../services/TonosService'
 import ru from 'date-fns/locale/ru';
+import AdminService from '../../services/AdminService';
 
-function ChangeUserModal(props) {
-  /* const [ findLabel, setFindLabel ] = useState('')
+function ChangePatientModal(props) {
+
+  const [ districts, setDistricts ] = useState([])
+  
+  const [changedPatinet, setChangedPatinet] = useState(null)
+
+  const [ findLabel, setFindLabel ] = useState('')
   const [ choice, setChoice ] = useState('')
   const [ selected, setSelected ] = useState(true)
 
-  const [secondName, setSecondName] = useState(props.patient.surname)
-  const [firstName, setFirstName] = useState(props.patient.name)
-  const [patronomicName, setPatronomicName] = useState(props.patient.patronomic_name)
-  const [phone, setPhone] = useState(props.patient.phone.substring(2))
-  const [email, setEmail] = useState(props.patient.email)
+  const [patientId, setPatientId] = useState(props.patient.p_id)
+  const [secondName, setSecondName] = useState(props.patient.p_surname)
+  const [firstName, setFirstName] = useState(props.patient.p_name) 
+  const [patronomicName, setPatronomicName] = useState(props.patient.p_patronomic_name)
+  const [phone, setPhone] = useState(props.patient.p_phone.substring(3))
+  const [email, setEmail] = useState(props.patient.p_email)
   const [snils, setSnils] = useState(props.patient.snils)
   const [polis, setPolis] = useState(props.patient.polis)
-  const [birthDate, setBirthDate] = useState(Date.parse(props.patient.birth_date));
-  const [gender, setGender] = useState(props.patient.gender_id)
-  const [adress, setAdress] = useState(props.patient.address)
-  const [district, setDistrict] = useState(props.patient.sp_district_id) */
-
-  /* const findPatient = async () => {
+  const [birthDate, setBirthDate] = useState(Date.parse(props.patient.p_birth_date));
+  const [gender, setGender] = useState(props.patient.p_gender_id)
+  const [adress, setAdress] = useState(props.patient.p_address)
+  const [district, setDistrict] = useState(props.patient.p_sp_district_id)
+  const districtRef = useRef(district);
+  const findPatient = async () => {
     if (choice > 2) 
       setSelected(false)
     else {
@@ -30,9 +37,28 @@ function ChangeUserModal(props) {
       props.sendData(patients)
       props.onHide();
     }
-  } */
+  }
+
   useEffect(() => {
-  }, [props])
+    console.log(props.patient)
+    TonosService.getDistricts().then((result) => {
+      setDistricts(result.data)
+      districtRef.current.value = district;
+    })
+  }, [])
+  
+
+  const saveChanges = async () => {
+    const user = {
+      p_id: patientId, secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district
+
+    }
+    console.log(user)
+    const response = await AdminService.saveChangesToPatient(user);
+    console.log(response)
+    setChangedPatinet(response.data)
+  }
+
 
 
   return (
@@ -49,8 +75,7 @@ function ChangeUserModal(props) {
     </Modal.Header>
     <Modal.Body>
       <Form>
-        <a>{props.user.uud_login}</a>
-        {/* { props.patient && 
+        { props.patient && !changedPatinet ?
             <>
               <Form.Label htmlFor="basic-email">Фамилия</Form.Label>
                 <InputGroup className="mb-3">
@@ -156,7 +181,19 @@ function ChangeUserModal(props) {
                 </InputGroup>
 
                 <div className="d-flex my-3">
-                  <Form.Select 
+                  {
+                    districts && 
+                    <Form.Select ref={districtRef} onChange={e => {setDistrict(e.target.value); console.log(e.target.value)}} aria-label="Район прописки">
+                        <option>Район прописки</option>
+                        { 
+                            districts.map((district, index) => 
+                              <option value={district.id}>{district.name}</option>
+                            )
+                        }
+                    </Form.Select>
+                  }
+                  
+                  {/* <Form.Select 
                     onChange={e => {console.log(`district ${e.target.value}`); 
                     setDistrict(e.target.value);}} 
                     aria-label="Район прописки"
@@ -169,10 +206,12 @@ function ChangeUserModal(props) {
                       <option value="7">Россошь</option>
                       <option value="8">Борисоглебск</option>
                       <option value="9">Воронеж. Поликлинника №7</option>
-                  </Form.Select>
+                  </Form.Select> */}
                 </div>
             </>   
-        } */}
+            :
+            <><h3>Изменения внесены!</h3></>
+        }
         
       </Form>
     </Modal.Body>
@@ -180,10 +219,10 @@ function ChangeUserModal(props) {
       <Button variant="secondary" onClick={props.onHide}>
         Закрыть
       </Button>
-      <Button variant="primary" >Сохранить изменения</Button>
+      {!changedPatinet && <Button variant="primary" onClick={saveChanges}>Сохранить изменения</Button>}
     </Modal.Footer>
   </Modal>
   )
 }
 
-export default ChangeUserModal
+export default ChangePatientModal
