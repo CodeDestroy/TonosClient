@@ -43,6 +43,8 @@ function AddPatient() {
   const [ showPatients, setShowPatients ] = useState(null)
   const [ districts, setDistricts ] = useState([])
 
+  const [error, setError] = useState(null)
+
   useEffect(() => {
     TonosService.getDistricts().then((result) => {
       setDistricts(result.data)
@@ -52,6 +54,7 @@ function AddPatient() {
   const getData = (val) => {
     // do not forget to bind getData in constructor
     //console.log(val);
+    setPatients([])
     setPatients(val.data)
   }  
   const changeExisting = () => {
@@ -69,6 +72,7 @@ function AddPatient() {
   const changePatient = event => {
     
     setPatientId(event.currentTarget.id)
+    console.log(patients[event.currentTarget.id])
     handleShowPatient()
     
   }
@@ -76,13 +80,25 @@ function AddPatient() {
     //console.log(patients)
   }, [patients])
   const register = async () => {
-    const patient = await TonosService.regPatient(secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district, login, password)
-    let c = []
-    c.push(patient.data)
-    setPatients(c)
-    //patients.push(patient.data)
-    setShowPatients(true)
-    changeExisting()
+    setPatients([])
+    try {
+      const patient = await TonosService.regPatient(phone, email, snils, polis,  district, password)
+
+      let c = []
+      c.push(patient.data)
+      setPatients(c)
+      //patients.push(patient.data)
+      setShowPatients(true)
+      changeExisting()
+      setError(null)
+    }
+    catch (e) {
+      setError(e.response.data)
+    }
+
+    
+    
+    
   }
 
   /* const print = async () => {
@@ -107,11 +123,12 @@ function AddPatient() {
             label={`Повторный приём`}
             onChange={changeExisting}
           />
+          {error && <h4 style={{color: 'red'}}>{error}</h4>}
           {
             !exists ? 
             <>
               <Row className="justify-content-center align-items-center">
-                <Form.Label htmlFor="basic-email">Фамилия</Form.Label>
+                {/* <Form.Label htmlFor="basic-email">Фамилия</Form.Label>
                 <InputGroup className="mb-3">
                   <Form.Control
                     placeholder="Иванов"
@@ -142,7 +159,7 @@ function AddPatient() {
                     onChange={(e) => setPatronomicName(e.target.value)}
                     value={patronomicName}
                   />
-                </InputGroup>
+                </InputGroup> */}
 
                 <Form.Label htmlFor="basic-phonenumber">Номер телефона</Form.Label>
                 <InputGroup className="mb-3">
@@ -179,7 +196,7 @@ function AddPatient() {
                     value={polis}
                   />
                 </InputGroup>
-                <div className="d-flex mb-3">
+                {/* <div className="d-flex mb-3">
                   <DatePicker
                     locale={ru}
                     selected={birthDate}
@@ -196,12 +213,12 @@ function AddPatient() {
                     <option value="1">Мужской</option>
                     <option value="2">Женский</option>
                   </Form.Select>
-                </div>
+                </div> */}
                 
-                <InputGroup>
+                {/* <InputGroup>
                   <InputGroup.Text>Адрес</InputGroup.Text>
                   <Form.Control onChange={e => setAdress(e.target.value)} value={adress} as="textarea" aria-label="Адрес" />
-                </InputGroup>
+                </InputGroup> */}
                 <div className="d-flex my-3">
                   <Form.Select onChange={e => {setDistrict(e.target.value);}} aria-label="Район прописки">
                       <option>Район прописки</option>
@@ -213,7 +230,7 @@ function AddPatient() {
                       }
                   </Form.Select>
                 </div>
-                <Form.Label htmlFor="basic-email">Логин</Form.Label>
+                {/* <Form.Label htmlFor="basic-email">Логин</Form.Label>
                 <InputGroup className="mb-3">
                   <Form.Control 
                     placeholder="Логин"
@@ -222,7 +239,7 @@ function AddPatient() {
                     onChange={(e) => setLogin(e.target.value)}
                     value={login}
                   />
-                </InputGroup>
+                </InputGroup> */}
                 <Form.Label htmlFor="basic-email">Пароль</Form.Label>
                 <InputGroup className="mb-3">
                   <Form.Control 
@@ -278,19 +295,27 @@ function AddPatient() {
                     {Array.from({ length: 1 }).map((_, index) => (
                       <th key='th_6'>Полис</th>
                     ))}
+                    {Array.from({ length: 1 }).map((_, index) => (
+                      <th key='th_7'>Дата начала приёма</th>
+                    ))}
+                    {Array.from({ length: 1 }).map((_, index) => (
+                      <th key='th_8'>Статус приёма</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {
                   patients.map((patient, index) => 
-                    <tr key={`tr_${patient.id}`}>
-                      <td key={`td_${patient.id}`}>{patient.id}</td>
-                      <td key={`td_${patient.surname}_surname`}>{patient.surname}</td>
-                      <td key={`td_${patient.name}_name`}>{patient.name}</td>
-                      <td key={`td_${patient.patronomic_name}_patr_name`}>{patient.patronomic_name}</td>
+                    <tr key={`tr_${patient.p_id}`}>
+                      <td key={`td_${patient.id}`}>{index+1}</td>
+                      <td key={`td_${patient.p_surname}_surname`}>{patient.p_surname}</td>
+                      <td key={`td_${patient.p_name}_name`}>{patient.p_name}</td>
+                      <td key={`td_${patient.p_patronomic_name}_patr_name`}>{patient.p_patronomic_name}</td>
                       <td key={`td_${patient.snils}`}>{patient.snils}</td>
                       <td key={`td_${patient.polis}`}>{patient.polis}</td>
-                      <td key={`td_${patient.id}_change_btn`}>
+                      <td key={`td_${patient.ap_date}`}>{patient.ap_date}</td>
+                      <td key={`td_${patient.finished}_index`}>{(patient.finished == '' || patient.finished == null) ? 'Открыт' : patient.finished}</td>
+                      <td key={`td_${patient.uud_id}_change_btn`}>
                         <Button id={index} onClick={accpetPatient}>Принять пациента</Button>
                         <Button id={index} onClick={changePatient}>
                           <Icon.PencilFill width={'20px'}/>

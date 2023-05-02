@@ -19,5 +19,36 @@ export default class AdminService {
         return $api.post('/admin/saveChangesToPatient', {user})
     }
 
+    static async saveChangesToUser(user) {
+        return $api.post('/admin/saveChangesToUser', {user})
+    }
+
+    static async getCountMedOrgs() {
+        return $api.get('/admin/getCountMedOrgs')
+    }
+
+    static async getMedPostsWithMO() {
+        return $api.get('/admin/getMedPostsWithMO')
+    }
+    
+    static async saveOrAddOrg(medOrgId, medOrgName, medOrgNameSmall, inn, region, parentOrgId) {
+        return $api.post('/admin/saveOrAddOrg', {medOrgId, medOrgName, medOrgNameSmall, inn, region, parentOrgId})
+    }
+    
+    static async saveOrAddDistrict(id, name) {
+        return $api.post('/admin/saveOrAddDistrict', {id, name})
+    }
+
+    static async saveOrAddPost(id, med_post_name, parent_id, medical_org_id) {
+        return $api.post('/admin/saveOrAddPost', {id, med_post_name, parent_id, medical_org_id})
+    }
+
+    static async getMedOrgs(currentPage, order) {
+        return $api.post('/admin/getMedOrgs', {currentPage, order})
+    }
+
+    static async getDistricts() {
+        return $api.get('/admin/getDistricts')
+    }
     
 }

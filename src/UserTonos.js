@@ -6,13 +6,22 @@ import { Button, Col, Container, Row, Card  } from 'react-bootstrap';
 import Header from './Components/Header';
 import { Context } from '.';
 import TonosService from './services/TonosService'
+import SuccessfulSendingTonos from './Components/Modals/SuccessfulSendingTonos';
+import UnSuccessfulSendingTonosModal from './Components/Modals/UnSuccessfulSendingTonosModal';
 
 function UserTonos() {
-    const [sys, setSys] = useState();
-    const [dia, setDia] = useState();
-    const [pul, setPul] = useState();
-    const [deviceId, setId] = useState();
-    const [deviceName, setName] = useState();
+    const [sys, setSys] = useState(null);
+    const [dia, setDia] = useState(null);
+    const [pul, setPul] = useState(null);
+    const [deviceId, setId] = useState(null);
+    const [deviceName, setName] = useState(null);
+
+    const modalShow = () => setSuccessfulSendingTonos(true);
+    const [successfulSendingTonos, setSuccessfulSendingTonos] = useState(false);
+
+    const modalShowUnsuccessful = () => setUnSuccessfulSendingTonos(true);
+    const [unsuccessfulSendingTonos, setUnSuccessfulSendingTonos] = useState(false);
+
     const { store } = useContext(Context);
     useEffect (() => {
       
@@ -21,8 +30,8 @@ function UserTonos() {
       }
       
     }, [store])
-    const handleShow = () => setModalShow(true);
-    const [modalShow, setModalShow] = React.useState(false);
+    // const handleShow = () => setModalShow(true);
+    
 
     /* const print = async () => {
       const state = {
@@ -130,14 +139,22 @@ function UserTonos() {
     }
     return result;
   }  
-  const sendResults = () => {
-    TonosService.sendResults(sys, dia, pul, deviceId, store.user.patient_id, deviceName)
+  const sendResults = async () => {
+    if (sys == null || dia == null || pul == null)  {
+      modalShowUnsuccessful()
+    }
+    else {
+      modalShow()
+      const result = await TonosService.sendResults(sys, dia, pul, deviceId, store.user.patient_id, deviceName)
+    }
   }
     
     return (
         <>
         <Header/>
           <div  style={{paddingLeft: '72px'}}>
+            <SuccessfulSendingTonos show={successfulSendingTonos} onHide={() => setSuccessfulSendingTonos(false)}/>
+            <UnSuccessfulSendingTonosModal show={unsuccessfulSendingTonos} onHide={() => setUnSuccessfulSendingTonos(false)}/>
             <Container>
               <div className="mt-5 vh-100 justify-content-center align-items-center">
                 <Row className="justify-content-center align-items-center">
@@ -202,11 +219,13 @@ function UserTonos() {
                         <Card.Header as="h5">Как измерить давление и передать данные?</Card.Header>
                           <Card.Body>
                             <Row>
-                              <Card.Text className="my-3">1. Включите тонометр и зажмите кнопку "Старт" на тонометре</Card.Text>
-                              <Card.Text>2. Нажмите кнопку "Подключить устройство" на экране компьютера/телефона</Card.Text>
-                              <Card.Text className="mb-3">3. В открывшемся окне выберите ваш тонометр и подключитесь к нему</Card.Text>
-                              <Card.Text>4. Дождитесь пока тонометр выполнит измерение и данные отобразятся на экране компьютера/телефона</Card.Text>
-                              <Card.Text>5. Нажмите кнопку "Передать данные" на экране компьютера/телефона</Card.Text>
+                              <Card.Text className="my-3">1. Зажмите кнопку "Старт" на тонометре.</Card.Text>
+                              <Card.Text>2. Нажмите кнопку "Подключить устройство" на экране компьютера/телефона.</Card.Text>
+                              <Card.Text className="mb-3">3. В открывшемся окне выберите ваш тонометр и подключитесь к нему.</Card.Text>
+                              <Card.Text>4. Нажмите на кнопку "Старт" на тонометре еще раз, и затем еще раз.</Card.Text>
+                              <Card.Text>5. Дождитесь пока тонометр выполнит измерение и данные отобразятся на экране компьютера/телефона.</Card.Text>
+                              <Card.Text>6. Нажмите кнопку "Передать данные" на экране компьютера/телефона.</Card.Text>
+                              <Card.Text className="mb-3">Если после нажатия на кнопку "Подключить устройство" в открывшемся окне не отображается тонометр, то попробуйте сначала подключиться к тонометру в меню bluetooth вашего компьютера/телефона и попробуйте заново.</Card.Text>
                             </Row>
                           </Card.Body>
                       </Card>

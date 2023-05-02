@@ -45,7 +45,7 @@ import {
   function Chart(props) {
 
     const [ data, setData] = useState([])
-
+    const [ max, setMax] = useState(0)
     const parseDate = (val) => {
         let string = val.replace(/\.\d+Z/,'')
         //string = string.replace('T', ' ')
@@ -55,6 +55,9 @@ import {
     useEffect(() => {
         let data = [];
         props.measure.forEach(element => {
+            if (element.upper_pressure > max) {
+                setMax(element.upper_pressure)
+            }
             data.push({
                 name: parseDate(element.dt_dimension),
                 sys: element.upper_pressure,
@@ -63,6 +66,7 @@ import {
             })
             
         });
+        console.log(max)
         setData(data)
     }, [])
 
@@ -81,8 +85,8 @@ import {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" type="category"/>
-                <YAxis />
+                <XAxis dataKey="name" type="category" padding={{ left: 20, right: 20 }}/>
+                <YAxis type="number" domain={[0, 'dataMax + 50']}/>
                 <Tooltip />
                 <Legend />
                 <Line

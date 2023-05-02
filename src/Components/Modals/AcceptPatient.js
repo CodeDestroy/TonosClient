@@ -1,6 +1,7 @@
 import { Form, Button, Modal } from 'react-bootstrap'
 import React, { useEffect, useState, useContext } from 'react'
 import TonosService from '../../services/TonosService'
+import FileService from '../../services/FileService'
 import { Context } from '../..';
 
 export default function AcceptPatient(props) {
@@ -13,6 +14,7 @@ export default function AcceptPatient(props) {
     
     useEffect(()=> {
         setPatient(props.patient)
+        TonosService.getDirByDoctorId(store.user.doctor_id)
     }, [])
 
     useEffect (() => {
@@ -29,7 +31,8 @@ export default function AcceptPatient(props) {
           optionalServices: [0x2A35, 0x180A, 0x1810],
           }).then(device => {
               device.gatt.connect()
-              setId(device.id)
+              console.log(device)
+              setId(device.name)
             device.addEventListener('gattserverdisconnected', onDisconnected);
           });
       };
@@ -59,7 +62,8 @@ export default function AcceptPatient(props) {
             DATE_DOC: Date.now(),
         } */
         console.log(store.user)
-        const response = await TonosService.addAppointment(patient.id, store.user.doctor_id, device.id)
+        const response = await TonosService.addAppointment(patient.p_id, store.user.doctor_id, device.id)
+        const files = await FileService.print(patient.p_id, store.user.doctor_id, device.serial_number, response.data.id)
         setAppointment(response.data)
     }
 
@@ -81,13 +85,13 @@ export default function AcceptPatient(props) {
             {(patient && !appontment) ? 
                 <>
 
-                    <p>ФИО: {patient.full_name}</p>
+                    <p>ФИО: {patient.p_full_name}</p>
                     <p>СНИЛС: {patient.snils}</p>
                     <p>Полис: {patient.polis}</p>
-                    <p>Телефон: {patient.phone}</p>
-                    <p>Почта: {patient.email}</p>
-                    <p>Дата рождения: {patient.birth_date}</p>
-                    <p>Адрес: {patient.address}</p>
+                    <p>Телефон: {patient.p_phone}</p>
+                    <p>Почта: {patient.p_email}</p>
+                    <p>Дата рождения: {patient.p_birth_date}</p>
+                    <p>Адрес: {patient.p_address}</p>
                     {error && <p style={{color: 'red'}}>{error}</p>}
                     
                     {
@@ -113,7 +117,7 @@ export default function AcceptPatient(props) {
         <Button variant="secondary" onClick={props.onHide}>
             Закрыть
         </Button>
-        <Button variant="primary" onClick={endAccepting}>Завершить приём</Button>
+        {(patient && !appontment) && <Button variant="primary" onClick={endAccepting}>Завершить приём</Button>}
         </Modal.Footer>
     </Modal>
     )

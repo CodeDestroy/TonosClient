@@ -1,16 +1,25 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { Table, Container, Row } from 'react-bootstrap'
+import { Table, Container, Row, Button, Col } from 'react-bootstrap'
 import Header from './Components/Header'
 import { Context } from '.';
 import TonosService from './services/TonosService';
 import { PaginationControl } from 'react-bootstrap-pagination-control';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as Icon from 'react-bootstrap-icons'
+import DatePicker from "react-datepicker";
+import ru from 'date-fns/locale/ru';
+import Chart from './Components/Chart';
 
 function TonosStat() {
     const { store } = useContext(Context);
     const [ measures, setMeasures ] = useState([])
     const [ numPages, setNumPages ] = useState(null)
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [ chartShow, setChartShow] = useState(false)
+    const [ measuresByPatinet, setMeasuresByPatinet ] = useState([])
+    
     const [ currentPage, setCurrentPage ] = useState(1)
     const [order, setOrder] = useState('id_desc')
     useEffect (() => {
@@ -20,6 +29,16 @@ function TonosStat() {
             
         }
     }, [store])
+
+    const handleChart = async event => {
+        setChartShow(false);
+        setMeasuresByPatinet([])
+        /* var endtime = new Date().getTime(int); // get your number
+        var endDate = new Date(time); */
+        const data = await TonosService.getAllMeasuresByPatientIdWithDataFormat(store.user.patient_id, startDate, endDate)
+        setMeasuresByPatinet(data.data)
+        setChartShow(true);
+    }
 
     const getCountMeasuresByPatientId = () => {
         TonosService.getCountMeasuresByPatientId(store.user.patient_id)
@@ -48,9 +67,18 @@ function TonosStat() {
     }
 
     const parseDate = (val) => {
-        let string = val.replace(/\.\d+Z/,'')
-        string = string.replace('T', ' ')
-        return string
+        // let string = val.replace(/\.\d+Z/,'')
+        // string = string.replace('T', ' ')
+        // return string
+        
+        const timezoneOffset = new Date().getTimezoneOffset() / 60; 
+        const moscowOffset = 3;
+        const hourOffset = moscowOffset - timezoneOffset;
+
+        let date = new Date(val.replace(/\.\d+Z/,'').replace('T', ' '));
+        date.setHours(date.getHours() + hourOffset);
+        
+        return date.toISOString().replace('T', ' ').replace(/\.\d+Z/,'');
     }
 
     const orderByDate = async () => {
@@ -167,20 +195,16 @@ function TonosStat() {
                                             </thead>
                                             <tbody>
                                             { 
-                                            measures.map((measure, index) => 
-                                                
-                                                <tr key={`tr_${index}`}>
+                                            measures.map((measure, index) =>                                                 
+                                                <tr key={`tr_${index}`} style={{color: (measure.upper_pressure > 135 ? 'white' : 'black'), backgroundColor: (measure.upper_pressure > 135 && (measure.upper_pressure >= 180 ? 'rgba(255, 0, 0, 0.8)' : 'rgba(255, 165, 0, 0.8)'))}}>
                                                     <td>{measure.id}</td>
                                                     <td>{parseDate(measure.dt_dimension)}</td>
                                                     <td>{measure.upper_pressure}</td>
                                                     <td>{measure.lower_pressure}</td>
                                                     <td>{measure.heart_rate}</td>  
-                                                </tr>
-                                                            
-                                            
-                                            )
+                                                </tr>   
+                                                )
                                             }
-                                            
                                             </tbody>
                                 </Table>
                                 <PaginationControl
@@ -196,9 +220,53 @@ function TonosStat() {
                                     ellipsis={1}
                                 />
                                 <br />
+                                {/* <Col  md={8} lg={6} xs={12}> */}
+                                <div className="d-flex my-5 align-items-center justify-content-center">
+                                    <Button  onClick={handleChart} className='mx-3 btn-primary btn-lg'>Показать график</Button>
+                                </div>
+                                <Row className='mb-2'>
+                                    <Col  md={{ span: 3, offset: 2 }} lg={4} xs={{ span: 10, offset: 2}}>
+                                        <p>Дата начальная</p>
+                                        <DatePicker
+                                        locale={ru}
+                                        selected={startDate}
+                                        onChange={(date) => {setStartDate(date)}}
+                                        showYearDropdown
+                                        maxDate={new Date()}
+                                        dropdownMode="select"
+                                        dateFormat="dd MMMM, yyyy"
+                                        scrollableYearDropdown
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={30}
+                                        timeCaption="Время"
+                                        />
+                                    </Col>
+                                    <Col  md={{ span: 3, offset: 1 }} lg={4} xs={{ span: 10, offset: 2}}>
+                                        <p>Дата конечная</p>
+                                        <DatePicker
+                                        locale={ru}
+                                        selected={endDate}
+                                        onChange={(date) => setEndDate(date)}
+                                        showYearDropdown
+                                        maxDate={new Date()}
+                                        dropdownMode="select"
+                                        dateFormat="dd MMMM, yyyy"
+                                        scrollableYearDropdown
+                                        showTimeSelect
+                                        timeFormat="HH:mm"
+                                        timeIntervals={30}
+                                        timeCaption="Время"
+                                        />
+                                    </Col>
+                                </Row>
+
                             </div>
                         
                     }
+                </Row>
+                <Row id="chartContainer">
+                    {chartShow && measuresByPatinet.length > 0 && <Chart measure={measuresByPatinet}/>}
                 </Row>
             </Container>
         </>

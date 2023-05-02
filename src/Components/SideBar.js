@@ -7,6 +7,7 @@ import { Navbar } from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
 import { Context } from '..';
 import Administration from '../Administration';
+import {socket} from '../socket'
 
 function SideBar() {
     const windowHeight = useRef(window.innerHeight);
@@ -18,51 +19,99 @@ function SideBar() {
 
     const addTonometr =() => {
         history.push('/addTonometr')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
     const showTonometr = () => {
         history.push("/userTonometr");
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
     const showMeasure = () => {
         history.push("/userMeasure")
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
     const goToMain = () => {
         history.push('/')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
     const showMonitoring = () => {
         history.push('/monitoring')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
     const showAdministration = () => {
         history.push('/administration')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
     const showPersonalSettings = () => {
         history.push('/personalSettings')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
 
     const Logout = () => {
         store.logout();
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
     const addPatient = () => {
         history.push('/addPatient')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
     const userAdmin = () => {
         history.push('/userAdmin')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
     const showTonosStat = () => {
         history.push("/tonosStat")
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
     }
 
-    /* const showPatientStatistic = () => {
-        history.push('/patientStatistic')
-    } */
+    const roleAdmin = () => {
+        history.push('/roleAdministration')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
+    }
+
+    const medOrgAdmin = () => {
+        history.push('/administrationMedOrg')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
+    }
+
+    const postsAdmin = () => {
+        history.push('/administrationMedPosts')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
+    }
+    
+    const showStatistic = () => {
+        history.push('/userMeasure')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
+    }
+    
+    const adminDistrict = () => {
+        history.push('/administrationDistricts')
+        if (store.user.role == 4)
+            socket.emit('leave', store.user.id)
+    }
 
     return (
         <SideNav
@@ -87,7 +136,7 @@ function SideBar() {
                     <NavText>Главная</NavText>
                 </NavItem>
                 { 
-                store.user.role == 3 || store.user.role == 1  ? 
+                store.user.role != 2 ? 
                     <NavItem eventKey="statistic">
                         <NavIcon>
                             <Icon.GraphUp className="px-1 pb-1" size={30}/>
@@ -95,7 +144,7 @@ function SideBar() {
                         <NavText>
                             Статистика
                         </NavText>
-                        <NavItem eventKey="statistic/vrach-pacient">
+                        <NavItem onClick={showStatistic} eventKey="statistic/vrach-pacient">
                             <NavText>
                                 Статистика Врач -&gt; Пациент
                             </NavText>
@@ -128,7 +177,7 @@ function SideBar() {
                                 Принять пациента
                             </NavText>
                         </NavItem>
-                        <NavItem>
+                        {/* <NavItem>
                             <NavText>
                                 <div className="line"></div>
                             </NavText>
@@ -137,7 +186,7 @@ function SideBar() {
                             <NavText>
                                 Показать статистику измерений
                             </NavText>
-                        </NavItem>
+                        </NavItem> */}
                     </NavItem>
                     :
                     <NavItem  eventKey="distancTonom" style={{cursor:'pointer'}}>
@@ -173,7 +222,7 @@ function SideBar() {
                         <NavText>
                             Администрирование
                         </NavText>
-                        <NavItem eventKey="administration/add-patient">
+                        {/* <NavItem eventKey="administration/add-patient">
                             <NavText>
                                 Добавить нового пациента
                             </NavText>
@@ -182,13 +231,23 @@ function SideBar() {
                             <NavText>
                                 <div className="line"></div>
                             </NavText>
+                        </NavItem> */}
+                        <NavItem onClick={userAdmin} eventKey="administration/add-patient">
+                            <NavText>
+                                Администрировани пациентов
+                            </NavText>
+                        </NavItem>
+                        {/* <NavItem> !!!!!!!!!!!!!Персональные настройки
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
                         </NavItem>
                         <NavItem eventKey="administration/person-setting" onClick={showPersonalSettings}>
                             <NavText>
                                 Персональные настройки
                             </NavText>
-                        </NavItem>
-                        <NavItem>
+                        </NavItem> */}
+                         {/*<NavItem>
                             <NavText>
                                 <div className="line"></div>
                             </NavText>
@@ -197,11 +256,11 @@ function SideBar() {
                             <NavText>
                                 Администрирование пациентов
                             </NavText>
-                        </NavItem>
+                        </NavItem> */}
                     </NavItem>
                 }
                 {
-                store.user.role == 3 && 
+                (store.user.role >= 3 && store.user.role < 5) && 
                     <NavItem onDoubleClick={showAdministration} eventKey="administration">
                         <NavIcon>
                             <Icon.Gear className="px-1 pb-1" size={30}/>
@@ -219,7 +278,45 @@ function SideBar() {
                                 <div className="line"></div>
                             </NavText>
                         </NavItem>
-                        <NavItem onClick={userAdmin} eventKey="administration/add-patient">
+                        <NavItem onClick={userAdmin} eventKey="administration/admin-patient">
+                            <NavText>
+                                Администрировани пользователей
+                            </NavText>
+                        </NavItem>
+
+                        {/* <NavItem className='py-0'> !!!!!!!!!
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
+                        </NavItem>
+                        <NavItem eventKey="administration/person-setting" onClick={showPersonalSettings}>
+                            <NavText>
+                                Персональные настройки
+                            </NavText>
+                        </NavItem> */}
+
+                    </NavItem>
+                }
+                {
+                store.user.role > 4  && 
+                    <NavItem onDoubleClick={showAdministration} eventKey="administration">
+                        <NavIcon>
+                            <Icon.Gear className="px-1 pb-1" size={30}/>
+                        </NavIcon>
+                        <NavText>
+                            Администрирование
+                        </NavText>
+                        <NavItem onClick={addTonometr} eventKey="administration/add-patient">
+                            <NavText>
+                                Зарегестрировать новый тонометр
+                            </NavText>
+                        </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
+                        </NavItem>
+                        <NavItem onClick={userAdmin} eventKey="administration/admin-patient">
                             <NavText>
                                 Администрировани пользователей
                             </NavText>
@@ -229,12 +326,33 @@ function SideBar() {
                                 <div className="line"></div>
                             </NavText>
                         </NavItem>
-                        <NavItem eventKey="administration/admin-roles">
+                        <NavItem onClick={medOrgAdmin} eventKey="administration/admin-medOrg">
                             <NavText>
-                                Администрирование ролей пользователей
+                                Администрирование Медицинских Организаций
                             </NavText>
                         </NavItem>
-                        <NavItem className='py-0'>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
+                        </NavItem>
+                        <NavItem onClick={postsAdmin} eventKey="administration/admin-medPost">
+                            <NavText>
+                                Администрирование должностей
+                            </NavText>
+                        </NavItem>
+                        <NavItem>
+                            <NavText>
+                                <div className="line"></div>
+                            </NavText>
+                        </NavItem>
+                        <NavItem onClick={adminDistrict} eventKey="administration/admin-district">
+                            <NavText>
+                                Администрирование районов
+                            </NavText>
+                        </NavItem>
+
+                        {/* <NavItem className='py-0'> !!!!!!!!!
                             <NavText>
                                 <div className="line"></div>
                             </NavText>
@@ -243,7 +361,8 @@ function SideBar() {
                             <NavText>
                                 Персональные настройки
                             </NavText>
-                        </NavItem>
+                        </NavItem> */}
+
                     </NavItem>
                 }
                 {/* { 

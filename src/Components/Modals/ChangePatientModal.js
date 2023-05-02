@@ -1,30 +1,39 @@
 import { Container, InputGroup, Form, Button, Row, Col, Modal } from 'react-bootstrap'
 import MaskedFormControl from 'react-bootstrap-maskedinput'
 import DatePicker from "react-datepicker";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import TonosService from '../../services/TonosService'
 import ru from 'date-fns/locale/ru';
+import AdminService from '../../services/AdminService';
+import {AccordionSummary, Typography, AccordionDetails, TextField, Accordion} from '@mui/material';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function ChangePatientModal(props) {
 
-
+  const [ districts, setDistricts ] = useState([])
+  
+  const [changedPatinet, setChangedPatinet] = useState(null)
 
   const [ findLabel, setFindLabel ] = useState('')
   const [ choice, setChoice ] = useState('')
   const [ selected, setSelected ] = useState(true)
 
-  const [secondName, setSecondName] = useState(props.patient.surname)
-  const [firstName, setFirstName] = useState(props.patient.name)
-  const [patronomicName, setPatronomicName] = useState(props.patient.patronomic_name)
-  const [phone, setPhone] = useState(props.patient.phone.substring(2))
-  const [email, setEmail] = useState(props.patient.email)
+  const [patientId, setPatientId] = useState(props.patient.p_id)
+  const [secondName, setSecondName] = useState(props.patient.p_surname)
+  const [firstName, setFirstName] = useState(props.patient.p_name) 
+  const [patronomicName, setPatronomicName] = useState(props.patient.p_patronomic_name)
+  const [phone, setPhone] = useState(props.patient.p_phone.substring(3))
+  const [email, setEmail] = useState(props.patient.p_email)
   const [snils, setSnils] = useState(props.patient.snils)
   const [polis, setPolis] = useState(props.patient.polis)
-  const [birthDate, setBirthDate] = useState(Date.parse(props.patient.birth_date));
-  const [gender, setGender] = useState(props.patient.gender_id)
-  const [adress, setAdress] = useState(props.patient.address)
-  const [district, setDistrict] = useState(props.patient.sp_district_id)
-
+  const [birthDate, setBirthDate] = useState(Date.parse(props.patient.p_birth_date));
+  const [gender, setGender] = useState(props.patient.p_gender_id)
+  const [adress, setAdress] = useState(props.patient.p_address)
+  const [district, setDistrict] = useState(props.patient.p_sp_district_id)
+  const [newPass, setNewPass] = useState(null)
+  const [changePasswordInput, setChangePasswordInput] = useState(false)
+  const districtRef = useRef(district);
   const findPatient = async () => {
     if (choice > 2) 
       setSelected(false)
@@ -35,7 +44,34 @@ function ChangePatientModal(props) {
     }
   }
 
+  useEffect(() => {
+    TonosService.getDistricts().then((result) => {
+      setDistricts(result.data)
+      districtRef.current.value = district;
+    })
+  }, [])
   
+
+  const saveChanges = async () => {
+    const user = {
+      p_id: patientId, secondName, firstName, patronomicName, phone, email, snils, polis, birthDate, gender, adress, district, newPass
+
+    }
+    const response = await AdminService.saveChangesToPatient(user);
+    setChangedPatinet(response.data)
+  }
+
+  const changePass = () => {
+    if (changePasswordInput == true) {
+      console.log(false)
+      setChangePasswordInput(false)
+    }
+    else {
+      console.log(true)
+      setChangePasswordInput(true)
+    }
+    
+  }
 
 
 
@@ -53,7 +89,7 @@ function ChangePatientModal(props) {
     </Modal.Header>
     <Modal.Body>
       <Form>
-        { props.patient && 
+        { props.patient && !changedPatinet ?
             <>
               <Form.Label htmlFor="basic-email">Фамилия</Form.Label>
                 <InputGroup className="mb-3">
@@ -126,7 +162,8 @@ function ChangePatientModal(props) {
                   />
                 </InputGroup>
 
-                <div className="d-flex mb-3">
+                <div className="mb-3">
+                  <Form.Label htmlFor="basic-dolzhnost">Дата рождения</Form.Label>
                   <DatePicker
                     locale={ru}
                     selected={birthDate}
@@ -138,7 +175,7 @@ function ChangePatientModal(props) {
                     scrollableYearDropdown
                   />
 
-                  <Form.Select 
+                  {/* <Form.Select 
                   onChange={e => {setGender(e.target.value);}} 
                   aria-label="Пол"
                   defaultValue={gender}
@@ -146,7 +183,7 @@ function ChangePatientModal(props) {
                     <option>Пол</option>
                     <option value="1">Мужской</option>
                     <option value="2">Женский</option>
-                  </Form.Select>
+                  </Form.Select> */}
                 </div>
 
                 <InputGroup>
@@ -159,21 +196,33 @@ function ChangePatientModal(props) {
                 </InputGroup>
 
                 <div className="d-flex my-3">
-                  <Form.Select 
-                    onChange={e => {setDistrict(e.target.value);}} 
-                    aria-label="Район прописки"
-                    defaultValue={district}
-                    >
-                      <option>Район прописки</option>
-                      <option value="4">Воронеж</option>
-                      <option value="5">Лиски</option>
-                      <option value="6">Новая Усмань</option>
-                      <option value="7">Россошь</option>
-                      <option value="8">Борисоглебск</option>
-                      <option value="9">Воронеж. Поликлинника №7</option>
-                  </Form.Select>
+                  {
+                    districts && 
+                    <Form.Select ref={districtRef} onChange={e => {setDistrict(e.target.value);}} aria-label="Район прописки">
+                        <option>Район прописки</option>
+                        { 
+                            districts.map((district, index) => 
+                              <option value={district.id}>{district.name}</option>
+                            )
+                        }
+                    </Form.Select>
+                  }
                 </div>
+                <Accordion onChange={changePass}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Typography >Смена пароля</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <TextField onChange={e => setNewPass(e.target.value)} style={{width: '100%'}} id="outlined-basic" label="Новый пароль" variant="outlined" />
+                  </AccordionDetails>
+                </Accordion>
             </>   
+            :
+            <><h3>Изменения внесены!</h3></>
         }
         
       </Form>
@@ -182,7 +231,7 @@ function ChangePatientModal(props) {
       <Button variant="secondary" onClick={props.onHide}>
         Закрыть
       </Button>
-      <Button variant="primary" >Сохранить изменения</Button>
+      {!changedPatinet && <Button variant="primary" onClick={saveChanges}>Сохранить изменения</Button>}
     </Modal.Footer>
   </Modal>
   )

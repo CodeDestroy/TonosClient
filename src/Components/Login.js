@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { useState, useContext, useEffect } from 'react';
 import { Context } from '..';
@@ -13,12 +13,21 @@ function Login() {
     const [User_pass, setUser_pass] = useState('');
     const { store } = useContext(Context);
     const [ error, setError] = useState(null);
-    
+    const loginInputReference = useRef(null);
+    const passwordInputReference = useRef(null);
+    const buttonReference = useRef(null)
+    const [isDisabled, setIsDisabled] = useState(true)
 
     useEffect (() => {
         if (localStorage.getItem('token')) {
             //console.log(localStorage.getItem('token'))
             store.checkAuth();
+        }
+    }, [])
+
+    useEffect (() => {
+        if (passwordInputReference.current.value.length > 0 && loginInputReference.current.value.length > 0) {
+            setIsDisabled(false)
         }
     })
 
@@ -37,6 +46,30 @@ function Login() {
         await AuthService.registrarion('test4', 'test4', 1, 3)
     } 
 
+    const handleLoginPress = e => {
+        if (e.charCode == 13) {
+            if (passwordInputReference.current.value.length > 0) {
+                setIsDisabled(false)
+                buttonReference.current.focus();
+            }
+            else {
+                passwordInputReference.current.focus();
+            }
+        }
+    }
+
+    const handlePasswordPress = e => {
+        if (e.charCode == 13) {
+            if (loginInputReference.current.value.length > 0) {
+                setIsDisabled(false)
+                buttonReference.current.focus();
+            }
+            else {
+                loginInputReference.current.focus();
+            }
+        }
+    }
+    
 
   return (
     <div>
@@ -47,7 +80,7 @@ function Login() {
                     <Card className="shadow">
                         <Card.Body>
                             <div className="mb-3 mt-md-4">
-                                <h2 className="fw-bold mb-2 text-uppercase ">Тонометрия</h2>
+                                <h2 className="fw-bold mb-2 text-uppercase ">Дистанционные прикладные помощники</h2>
                                 <p className=" mb-5">Войдите в систему для продолжения</p>
                                 {error && <p style={{color: 'red'}}>{error}</p>}
                                 <div className="mb-3">
@@ -61,6 +94,8 @@ function Login() {
                                             placeholder="Введите логин" 
                                             onChange={e => setUser_nick(e.target.value)}
                                             value={User_nick}
+                                            ref={loginInputReference}
+                                            onKeyPress={handleLoginPress} 
                                         />
                                         </Form.Group>
                                         <Form.Group
@@ -73,6 +108,8 @@ function Login() {
                                                 placeholder="Введите пароль" 
                                                 onChange={e => setUser_pass(e.target.value)}
                                                 value={User_pass}
+                                                ref={passwordInputReference}
+                                                onKeyPress={handlePasswordPress} 
                                             />
                                         </Form.Group>
                                         <Form.Group
@@ -86,7 +123,7 @@ function Login() {
                                             </p>
                                         </Form.Group>
                                         <div className="d-grid">
-                                            <Button variant="primary" onClick={Login} type="button">
+                                            <Button variant="primary" onClick={Login} type="button" ref={buttonReference} disabled={isDisabled} >
                                                 Войти
                                             </Button>
                                         </div>

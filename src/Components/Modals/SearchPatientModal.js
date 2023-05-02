@@ -7,7 +7,8 @@ function SearchPatientModal(props) {
   const [ choice, setChoice ] = useState(-1)
   const [ selected, setSelected ] = useState(true)
   const findPatient = async () => {
-    if (props.doctor_id != null) {
+    console.log(props.role)
+    if (props.role < 4) {
       if (choice > 2 || choice < 0) 
         setSelected(false)
       else {
@@ -22,7 +23,7 @@ function SearchPatientModal(props) {
       if (choice > 2 || choice < 0) 
         setSelected(false)
       else {
-        const patients = await TonosService.findPatientByChoice(findLabel, choice)
+        const patients = await TonosService.findPatientAppointments(findLabel, choice)
         props.sendData(patients)
         props.onHide();
       }
